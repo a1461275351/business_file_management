@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>贸易云档 TradeDoc - 功能与使用说明</title>
+<style>
+  :root {
+    --primary: #1e6fd9;
+    --primary-light: #e8f0fe;
+    --primary-dark: #0d4ba8;
+    --success: #52c41a;
+    --warning: #faad14;
+    --danger: #f5222d;
+    --text: #1f2937;
+    --text-light: #6b7280;
+    --border: #e5e7eb;
+    --bg: #ffffff;
+    --bg-alt: #f9fafb;
+    --code-bg: #f3f4f6;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+                 "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    line-height: 1.7;
+    color: var(--text);
+    margin: 0;
+    padding: 0;
+    background: var(--bg-alt);
+  }
+  .layout {
+    display: flex;
+    max-width: 1400px;
+    margin: 0 auto;
+    background: var(--bg);
+    box-shadow: 0 0 30px rgba(0,0,0,0.05);
+  }
+  /* 左侧目录 */
+  .sidebar {
+    width: 260px;
+    background: #f7f9fc;
+    border-right: 1px solid var(--border);
+    padding: 24px 0;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    flex-shrink: 0;
+  }
+  .sidebar h3 {
+    margin: 0 0 16px;
+    padding: 0 24px;
+    font-size: 16px;
+    color: var(--primary);
+    border-bottom: 2px solid var(--primary-light);
+    padding-bottom: 12px;
+  }
+  .sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .sidebar li a {
+    display: block;
+    padding: 8px 24px;
+    color: var(--text);
+    text-decoration: none;
+    font-size: 14px;
+    border-left: 3px solid transparent;
+    transition: all 0.2s;
+  }
+  .sidebar li a:hover {
+    background: var(--primary-light);
+    border-left-color: var(--primary);
+    color: var(--primary-dark);
+  }
+  .sidebar li.sub a {
+    padding-left: 40px;
+    font-size: 13px;
+    color: var(--text-light);
+  }
+  /* 主体内容 */
+  .content {
+    flex: 1;
+    padding: 40px 56px;
+    min-width: 0;
+  }
+  .header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 32px 0;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(30, 111, 217, 0.2);
+  }
+  .header h1 {
+    margin: 0 0 8px;
+    font-size: 32px;
+    font-weight: 700;
+  }
+  .header p {
+    margin: 0;
+    opacity: 0.9;
+    font-size: 16px;
+  }
+  .header .meta {
+    margin-top: 16px;
+    font-size: 13px;
+    opacity: 0.8;
+  }
+  h2 {
+    margin: 48px 0 16px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--primary);
+    color: var(--primary-dark);
+    font-size: 24px;
+    scroll-margin-top: 20px;
+  }
+  h3 {
+    margin: 32px 0 12px;
+    color: var(--text);
+    font-size: 18px;
+    scroll-margin-top: 20px;
+    border-left: 4px solid var(--primary);
+    padding-left: 12px;
+  }
+  h4 {
+    margin: 20px 0 8px;
+    font-size: 15px;
+    color: var(--primary-dark);
+  }
+  p { margin: 8px 0 14px; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 14px;
+    background: white;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  th {
+    background: var(--primary);
+    color: white;
+    text-align: left;
+    padding: 10px 14px;
+    font-weight: 600;
+  }
+  td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  tr:hover { background: var(--bg-alt); }
+  tr:last-child td { border-bottom: none; }
+  code {
+    font-family: "Consolas", "Monaco", "Courier New", monospace;
+    background: var(--code-bg);
+    padding: 2px 6px;
+    border-radius: 3px;
+    color: #c7254e;
+    font-size: 13px;
+  }
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 16px 20px;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: "Consolas", monospace;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  pre code { background: transparent; color: inherit; padding: 0; }
+  blockquote {
+    border-left: 4px solid var(--primary);
+    background: var(--primary-light);
+    margin: 16px 0;
+    padding: 12px 20px;
+    color: var(--text);
+    border-radius: 0 6px 6px 0;
+  }
+  .badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+    margin-right: 4px;
+  }
+  .badge-success { background: #f6ffed; color: var(--success); border: 1px solid #b7eb8f; }
+  .badge-warning { background: #fffbe6; color: var(--warning); border: 1px solid #ffe58f; }
+  .badge-danger { background: #fff1f0; color: var(--danger); border: 1px solid #ffa39e; }
+  .badge-info { background: var(--primary-light); color: var(--primary); border: 1px solid #91d5ff; }
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+    margin: 20px 0;
+  }
+  .card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+  .card .icon {
+    font-size: 28px;
+    color: var(--primary);
+    margin-bottom: 8px;
+  }
+  .card h4 {
+    margin: 0 0 8px;
+    font-size: 16px;
+    color: var(--text);
+  }
+  .card p {
+    margin: 0;
+    color: var(--text-light);
+    font-size: 13px;
+  }
+  .step-list {
+    counter-reset: step;
+    list-style: none;
+    padding: 0;
+  }
+  .step-list li {
+    counter-increment: step;
+    position: relative;
+    padding: 12px 16px 12px 56px;
+    margin-bottom: 12px;
+    background: white;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+  }
+  .step-list li::before {
+    content: counter(step);
+    position: absolute;
+    left: 16px;
+    top: 12px;
+    width: 28px;
+    height: 28px;
+    background: var(--primary);
+    color: white;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 28px;
+    font-weight: 600;
+    font-size: 14px;
+  }
+  .flow {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 20px 0;
+    padding: 20px;
+    background: var(--bg-alt);
+    border-radius: 8px;
+  }
+  .flow-step {
+    background: white;
+    border: 2px solid var(--primary);
+    color: var(--primary-dark);
+    padding: 10px 18px;
+    border-radius: 24px;
+    font-weight: 500;
+    font-size: 14px;
+  }
+  .flow-arrow {
+    color: var(--primary);
+    font-size: 18px;
+    font-weight: bold;
+  }
+  .info-box {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .info-box .item {
+    background: white;
+    padding: 14px 18px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--primary);
+  }
+  .info-box .item .label {
+    font-size: 12px;
+    color: var(--text-light);
+    margin-bottom: 4px;
+  }
+  .info-box .item .value {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  /* 打印优化 */
+  @media print {
+    body { background: white; }
+    .sidebar { display: none; }
+    .layout { box-shadow: none; max-width: 100%; }
+    .content { padding: 20px; }
+    .header { box-shadow: none; }
+    h2, h3 { page-break-after: avoid; }
+    table, .card, pre { page-break-inside: avoid; }
+  }
+  /* 响应式 */
+  @media (max-width: 900px) {
+    .layout { flex-direction: column; }
+    .sidebar { width: 100%; height: auto; position: static; }
+    .content { padding: 20px; }
+  }
+  .toc-toggle {
+    display: none;
+  }
+  .footer {
+    margin-top: 60px;
+    padding: 30px 0;
+    text-align: center;
+    color: var(--text-light);
+    font-size: 13px;
+    border-top: 1px solid var(--border);
+  }
+</style>
+</head>
+<body>
+<div class="layout">
+
+  <!-- 左侧目录 -->
+  <aside class="sidebar">
+    <h3>📑 文档导航</h3>
+    <ul>
+      <li><a href="#overview">一、项目概述</a></li>
+      <li><a href="#tech-stack">二、技术栈</a></li>
+      <li><a href="#architecture">三、系统架构</a></li>
+      <li><a href="#features">四、功能模块清单</a></li>
+      <li class="sub"><a href="#feature-dashboard">  4.1 仪表盘</a></li>
+      <li class="sub"><a href="#feature-doc">  4.2 文件管理</a></li>
+      <li class="sub"><a href="#feature-upload">  4.3 上传录入</a></li>
+      <li class="sub"><a href="#feature-review">  4.4 人工核对</a></li>
+      <li class="sub"><a href="#feature-order">  4.5 订单/客户</a></li>
+      <li class="sub"><a href="#feature-ai">  4.6 AI 问答</a></li>
+      <li class="sub"><a href="#feature-admin">  4.7 系统设置</a></li>
+      <li><a href="#workflow">五、业务流程</a></li>
+      <li><a href="#user-guide">六、使用说明</a></li>
+      <li class="sub"><a href="#guide-login">  6.1 登录系统</a></li>
+      <li class="sub"><a href="#guide-upload">  6.2 上传文件</a></li>
+      <li class="sub"><a href="#guide-manage">  6.3 管理文件</a></li>
+      <li class="sub"><a href="#guide-review">  6.4 人工核对</a></li>
+      <li class="sub"><a href="#guide-export">  6.5 导出数据</a></li>
+      <li class="sub"><a href="#guide-ai">  6.6 AI 问答</a></li>
+      <li><a href="#roles">七、角色与权限</a></li>
+      <li><a href="#deploy">八、部署说明</a></li>
+      <li><a href="#ops">九、运维与故障排查</a></li>
+      <li><a href="#filetypes">十、支持的文件类型</a></li>
+      <li><a href="#todo">十一、待开发功能</a></li>
+    </ul>
+  </aside>
+
+  <!-- 主体内容 -->
+  <main class="content">
+
+    <!-- 标题 -->
+    <div class="header">
+      <h1>贸易云档 TradeDoc</h1>
+      <p>外贸文件智能管理系统 — 功能与使用说明</p>
+      <div class="meta">v2 · 文档更新于 2026-04-28</div>
+    </div>
+
+    <!-- 1. 概述 -->
+    <h2 id="overview">一、项目概述</h2>
+    <p>
+      <strong>贸易云档</strong>是一套面向外贸企业的文件智能管理系统,通过
+      <strong>OCR + AI</strong> 自动提取报关单、商业发票、装箱单、银行水单等
+      外贸单证的关键字段,实现文件从<strong>上传 → 识别 → 核对 → 归档 → 导出</strong>
+      的全流程数字化管理。
+    </p>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="icon">📤</div>
+        <h4>智能上传</h4>
+        <p>支持单文件与批量上传,自动生成业务编号,按年月分目录归档。</p>
+      </div>
+      <div class="card">
+        <div class="icon">🔍</div>
+        <h4>OCR 识别</h4>
+        <p>阿里云通义千问 + 本地模型双引擎,自动提取关键字段。</p>
+      </div>
+      <div class="card">
+        <div class="icon">✅</div>
+        <h4>人工核对</h4>
+        <p>低置信度字段自动转单证员核对,确保数据准确。</p>
+      </div>
+      <div class="card">
+        <div class="icon">📊</div>
+        <h4>报表导出</h4>
+        <p>支持单文件/批量导出 Excel,自定义字段模板。</p>
+      </div>
+      <div class="card">
+        <div class="icon">🤖</div>
+        <h4>AI 问答</h4>
+        <p>基于业务数据的智能问答,辅助决策分析。</p>
+      </div>
+      <div class="card">
+        <div class="icon">🔐</div>
+        <h4>权限管控</h4>
+        <p>基于角色的细粒度权限,6 大角色 18 项权限。</p>
+      </div>
+    </div>
+
+    <!-- 2. 技术栈 -->
+    <h2 id="tech-stack">二、技术栈</h2>
+    <table>
+      <thead>
+        <tr><th>层级</th><th>技术</th><th>版本/说明</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>前端</td><td>Vue 3 + Element Plus + Vite</td><td>已编译,产物在 <code>tradedoc/public/build/</code></td></tr>
+        <tr><td>后端 (PHP)</td><td>Laravel 13 + Sanctum + Spatie Permission</td><td>PHP 8.5.5 NTS / VS17 / x64</td></tr>
+        <tr><td>后端 (Python)</td><td>FastAPI + 阿里云 DashScope OCR</td><td>Python 3.10+,可选</td></tr>
+        <tr><td>数据库</td><td>MySQL 8.0</td><td>utf8mb4 / utf8mb4_unicode_ci</td></tr>
+        <tr><td>Web 服务器</td><td>Nginx 1.15+</td><td>phpStudy 自带,FastCGI 转发</td></tr>
+        <tr><td>PHP 运行</td><td>php-cgi 池</td><td>1 主 + 16 worker</td></tr>
+        <tr><td>Excel 导出</td><td>Maatwebsite/Excel</td><td>基于 PhpSpreadsheet</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 3. 架构 -->
+    <h2 id="architecture">三、系统架构</h2>
+    <pre><code>浏览器
+  │  http://server:8000
+  ▼
+┌──────────────────────────────────────────┐
+│  Nginx :8000  (phpStudy 自带)           │
+│  ├─ 静态资源 → public/build/、*.js/css  │
+│  └─ 其他请求 → FastCGI                   │
+└──────────────────────────────────────────┘
+                │  127.0.0.1:9001 (FastCGI)
+                ▼
+┌──────────────────────────────────────────┐
+│  PHP-CGI 池 (phpStudy 管理)             │
+│  ├─ xp.cn_cgi.exe (master)               │
+│  └─ php-cgi.exe × 16 (workers)           │
+│      ↓                                    │
+│  Laravel 应用                             │
+│  ├─ 认证 → Sanctum (Bearer Token)         │
+│  ├─ 权限 → Spatie Permission              │
+│  └─ ORM  → Eloquent                       │
+└──────────────────────────────────────────┘
+        │                         │
+        ▼                         ▼ HTTP (可选)
+┌──────────────┐        ┌──────────────────┐
+│ MySQL :3306  │        │ Python OCR :8100 │
+│ tradedoc 库  │        │ FastAPI (可选)   │
+└──────────────┘        └──────────────────┘</code></pre>
+
+    <h4>服务端口一览</h4>
+    <table>
+      <thead>
+        <tr><th>服务</th><th>端口</th><th>对外</th><th>启停方式</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Nginx (HTTP)</td><td>8000</td><td><span class="badge badge-success">✓ 用户访问</span></td><td>phpStudy 面板</td></tr>
+        <tr><td>PHP-CGI 池</td><td>9001</td><td><span class="badge badge-warning">仅内部</span></td><td>phpStudy 面板</td></tr>
+        <tr><td>MySQL</td><td>3306</td><td><span class="badge badge-warning">仅本地</span></td><td>phpStudy 面板</td></tr>
+        <tr><td>Python OCR</td><td>8100</td><td><span class="badge badge-warning">仅内部</span></td><td>start.bat / stop.bat</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 4. 功能模块 -->
+    <h2 id="features">四、功能模块清单</h2>
+
+    <h3 id="feature-dashboard">4.1 概览仪表盘</h3>
+    <table>
+      <thead><tr><th>功能点</th><th>API</th><th>前端页面</th></tr></thead>
+      <tbody>
+        <tr><td>文件统计概览</td><td><code>GET /api/v1/documents/statistics</code></td><td><code>/dashboard</code></td></tr>
+        <tr><td>通知未读数</td><td><code>GET /api/v1/notifications/unread-count</code></td><td>顶栏通知图标</td></tr>
+      </tbody>
+    </table>
+
+    <h3 id="feature-doc">4.2 文件管理</h3>
+    <table>
+      <thead><tr><th>功能点</th><th>API</th><th>前端页面</th></tr></thead>
+      <tbody>
+        <tr><td>文件列表(分页/筛选/搜索)</td><td><code>GET /api/v1/documents</code></td><td><code>/documents</code></td></tr>
+        <tr><td>文件详情</td><td><code>GET /api/v1/documents/{id}</code></td><td><code>/documents/:id</code></td></tr>
+        <tr><td>文件类型字典</td><td><code>GET /api/v1/document-types</code></td><td>上传时选择</td></tr>
+        <tr><td>文件预览</td><td><code>GET /api/v1/documents/{id}/preview</code></td><td>详情页内嵌</td></tr>
+        <tr><td>文件下载</td><td><code>GET /api/v1/documents/{id}/download</code></td><td>详情页按钮</td></tr>
+        <tr><td>单文件导出 Excel</td><td><code>GET /api/v1/documents/{id}/export</code></td><td>详情页按钮</td></tr>
+        <tr><td>批量导出 Excel</td><td><code>GET /api/v1/documents/export</code></td><td>列表页按钮</td></tr>
+        <tr><td>删除文件</td><td><code>DELETE /api/v1/documents/{id}</code></td><td>列表/详情页</td></tr>
+        <tr><td>变更文件状态</td><td><code>PUT /api/v1/documents/{id}/status</code></td><td>详情页</td></tr>
+        <tr><td>更新提取字段</td><td><code>POST /api/v1/documents/update-field</code></td><td>详情页编辑</td></tr>
+        <tr><td>新增提取字段</td><td><code>POST /api/v1/documents/add-field</code></td><td>详情页</td></tr>
+        <tr><td>删除提取字段</td><td><code>DELETE /api/v1/documents/fields/{fieldId}</code></td><td>详情页</td></tr>
+        <tr><td>重新 OCR 识别</td><td><code>POST /api/v1/documents/re-ocr</code></td><td>详情页按钮</td></tr>
+        <tr><td>查看 OCR 缓存</td><td><code>GET /api/v1/documents/{id}/ocr-cache</code></td><td>详情页</td></tr>
+        <tr><td>数据报表</td><td><code>GET /api/v1/documents/reports</code></td><td><code>/reports</code></td></tr>
+      </tbody>
+    </table>
+
+    <h3 id="feature-upload">4.3 上传录入</h3>
+    <table>
+      <thead><tr><th>功能点</th><th>API</th><th>前端页面</th></tr></thead>
+      <tbody>
+        <tr><td>单文件上传</td><td><code>POST /api/v1/documents/upload</code></td><td><code>/upload</code></td></tr>
+        <tr><td>批量上传</td><td><code>POST /api/v1/documents/batch-upload</code></td><td><code>/upload</code></td></tr>
+      </tbody>
+    </table>
+
+    <h3 id="feature-review">4.4 人工核对</h3>
+    <table>
+      <thead><tr><th>功能点</th><th>API</th><th>前端页面</th></tr></thead>
+      <tbody>
+        <tr><td>核对任务列表</td><td><code>GET /api/v1/reviews</code></td><td><code>/review</code></td></tr>
+        <tr><td>核对统计</td><td><code>GET /api/v1/reviews/statistics</code></td><td><code>/review</code></td></tr>
+        <tr><td>核对详情</td><td><code>GET /api/v1/reviews/{id}</code></td><td><code>/review</code></td></tr>
+        <tr><td>确认核对</td><td><code>POST /api/v1/reviews/{id}/confirm</code></td><td><code>/review</code></td></tr>
+        <tr><td>跳过核对</td><td><code>POST /api/v1/reviews/{id}/skip</code></td><td><code>/review</code></td></tr>
+      </tbody>
+    </table>
+
+    <h3 id="feature-order">4.5 订单与客户管理</h3>
+    <h4>订单管理</h4>
+    <table>
+      <thead><tr><th>功能点</th><th>API</th></tr></thead>
+      <tbody>
+        <tr><td>订单列表</td><td><code>GET /api/v1/orders</code></td></tr>
+        <tr><td>订单详情</td><td><code>GET /api/v1/orders/{id}</code></td></tr>
+        <tr><td>创建订单</td><td><code>POST /api/v1/orders</code></td></tr>
+        <tr><td>更新订单</td><td><code>PUT /api/v1/orders/{id}</code></td></tr>
+        <tr><td>删除订单</td><td><code>DELETE /api/v1/orders/{id}</code></td></tr>
+      </tbody>
+    </table>
+    <h4>客户管理</h4>
+    <table>
+      <thead><tr><th>功能点</th><th>API</th></tr></thead>
+      <tbody>
+        <tr><td>客户列表</td><td><code>GET /api/v1/customers</code></td></tr>
+        <tr><td>客户详情</td><td><code>GET /api/v1/customers/{id}</code></td></tr>
+        <tr><td>创建客户</td><td><code>POST /api/v1/customers</code></td></tr>
+        <tr><td>更新客户</td><td><code>PUT /api/v1/customers/{id}</code></td></tr>
+        <tr><td>删除客户</td><td><code>DELETE /api/v1/customers/{id}</code></td></tr>
+      </tbody>
+    </table>
+
+    <h3 id="feature-ai">4.6 AI 业务大模型</h3>
+    <table>
+      <thead><tr><th>功能点</th><th>API</th><th>前端页面</th></tr></thead>
+      <tbody>
+        <tr><td>AI 智能问答</td><td><code>POST /api/v1/ai/chat</code></td><td><code>/ai</code></td></tr>
+      </tbody>
+    </table>
+    <blockquote>
+      集成阿里云通义千问 (DashScope),以系统业务数据为上下文回答问题;
+      无 API Key 时降级为本地规则引擎。
+    </blockquote>
+
+    <h3 id="feature-admin">4.7 系统设置 (管理后台)</h3>
+    <table>
+      <thead><tr><th>功能点</th><th>API</th></tr></thead>
+      <tbody>
+        <tr><td>用户列表</td><td><code>GET /api/v1/admin/users</code></td></tr>
+        <tr><td>创建/更新/删除用户</td><td><code>POST/PUT/DELETE /api/v1/admin/users</code></td></tr>
+        <tr><td>角色列表</td><td><code>GET /api/v1/admin/roles</code></td></tr>
+        <tr><td>字段模板查询</td><td><code>GET /api/v1/admin/field-templates/{typeId}</code></td></tr>
+        <tr><td>操作日志</td><td><code>GET /api/v1/admin/logs</code></td></tr>
+      </tbody>
+    </table>
+
+    <!-- 5. 业务流程 -->
+    <h2 id="workflow">五、业务流程</h2>
+    <h4>文件处理主流程</h4>
+    <div class="flow">
+      <span class="flow-step">上传</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step">OCR 识别</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step">字段提取</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step">人工核对</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step">审批</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step">归档</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step">导出</span>
+    </div>
+
+    <h4>详细步骤</h4>
+    <ol class="step-list">
+      <li><strong>上传</strong>:用户通过 <code>/upload</code> 页面上传文件(支持单文件/批量),系统生成文件编号,存储到 <code>storage/app/private/documents/</code></li>
+      <li><strong>OCR 识别</strong>:PHP 后端调用 Python FastAPI 服务进行 OCR;引擎按优先级:阿里云 DashScope &gt; 本地模型 &gt; Mock</li>
+      <li><strong>字段提取</strong>:OCR 完成后根据字段模板自动提取关键字段(如报关单号、金额、日期等),存入 <code>document_fields</code> 表</li>
+      <li><strong>人工核对</strong>:置信度低于阈值(默认 80%)的字段自动生成核对任务,由单证员在 <code>/review</code> 页面逐一确认或修正</li>
+      <li><strong>审批</strong>:变更状态触发审批规则,支持多级审批</li>
+      <li><strong>归档</strong>:审批通过后文件状态变为 <code>archived</code>,记录归档时间</li>
+      <li><strong>导出</strong>:支持单文件/批量导出 Excel</li>
+    </ol>
+
+    <h4>文件状态流转</h4>
+    <pre><code>draft → ocr_processing → pending_review → pending_approval → approved → archived
+                                                                    ↓
+                                                                voided (任意状态可作废)</code></pre>
+
+    <!-- 6. 使用说明 -->
+    <h2 id="user-guide">六、使用说明</h2>
+
+    <h3 id="guide-login">6.1 登录系统</h3>
+    <ol class="step-list">
+      <li>打开浏览器访问:<code>http://服务器IP:8000</code></li>
+      <li>输入默认管理员账号:<strong>admin</strong> / <strong>admin123</strong></li>
+      <li>点击 "登录" 进入仪表盘</li>
+      <li><span class="badge badge-warning">重要</span> 首次登录后,请立即在「系统设置 → 用户管理」修改默认密码</li>
+    </ol>
+
+    <h3 id="guide-upload">6.2 上传文件</h3>
+    <ol class="step-list">
+      <li>点击左侧菜单「上传录入」进入 <code>/upload</code> 页面</li>
+      <li>选择文件类型(报关单 / 发票 / 装箱单 / 银行水单 等 9 种)</li>
+      <li>选择关联订单和客户(可选,用于自动归类)</li>
+      <li>拖拽文件或点击上传按钮(支持 PDF / 图片,单文件 ≤100MB)</li>
+      <li>系统自动调用 OCR 引擎识别,稍候片刻即可在「文件管理」中查看</li>
+    </ol>
+    <blockquote>
+      <strong>批量上传</strong>:可同时拖入多个文件,系统会逐个处理并生成任务。
+      OCR 识别耗时与文件页数和清晰度有关,通常每文件 5-30 秒。
+    </blockquote>
+
+    <h3 id="guide-manage">6.3 管理文件</h3>
+    <ol class="step-list">
+      <li>进入「文件管理」<code>/documents</code> 页面</li>
+      <li>使用顶部筛选器按文件类型、状态、日期、客户、订单等条件筛选</li>
+      <li>点击文件名进入详情页,可:
+        <ul>
+          <li>预览原始文件(支持 PDF / 图片)</li>
+          <li>查看 OCR 识别出的字段值</li>
+          <li>编辑字段(双击单元格)</li>
+          <li>新增/删除自定义字段</li>
+          <li>下载原文件</li>
+          <li>导出 Excel</li>
+          <li>触发重新 OCR(识别有误时使用)</li>
+        </ul>
+      </li>
+      <li>批量操作:列表页勾选多条 → 顶栏按钮(批量导出/批量删除)</li>
+    </ol>
+
+    <h3 id="guide-review">6.4 人工核对(单证员)</h3>
+    <ol class="step-list">
+      <li>登录单证员账号,进入「人工核对」<code>/review</code> 页面</li>
+      <li>查看待核对任务列表(按优先级/时间排序)</li>
+      <li>点击任务进入核对页:左侧显示原文件,右侧显示 OCR 识别字段</li>
+      <li>逐字段比对原文,修正错误内容</li>
+      <li>点击「确认」完成核对,或点击「跳过」转交他人</li>
+    </ol>
+
+    <h3 id="guide-export">6.5 导出数据</h3>
+    <ol class="step-list">
+      <li><strong>单文件导出</strong>:文件详情页点击「导出 Excel」按钮</li>
+      <li><strong>批量导出</strong>:列表页筛选所需文件 → 勾选 → 点击「批量导出」</li>
+      <li><strong>报表导出</strong>:进入「数据报表」<code>/reports</code> 页面,选择维度后导出</li>
+    </ol>
+
+    <h3 id="guide-ai">6.6 AI 智能问答</h3>
+    <ol class="step-list">
+      <li>进入「AI 问答」<code>/ai</code> 页面</li>
+      <li>用自然语言提问,例如:
+        <ul>
+          <li>"本月报关单总金额是多少?"</li>
+          <li>"客户张三本季度的发票有几张?"</li>
+          <li>"哪些文件还在待核对状态?"</li>
+        </ul>
+      </li>
+      <li>AI 会基于系统业务数据自动查询并回答</li>
+    </ol>
+
+    <!-- 7. 角色 -->
+    <h2 id="roles">七、角色与权限</h2>
+    <h4>默认账号</h4>
+    <div class="info-box">
+      <div class="item"><div class="label">用户名</div><div class="value">admin</div></div>
+      <div class="item"><div class="label">密码</div><div class="value">admin123</div></div>
+      <div class="item"><div class="label">角色</div><div class="value">超级管理员</div></div>
+      <div class="item"><div class="label">访问地址</div><div class="value">http://服务器IP:8000</div></div>
+    </div>
+
+    <h4>角色定义</h4>
+    <table>
+      <thead><tr><th>角色标识</th><th>显示名称</th><th>权限说明</th></tr></thead>
+      <tbody>
+        <tr><td><code>super_admin</code></td><td>超级管理员</td><td>全部功能与系统配置权限(18 项)</td></tr>
+        <tr><td><code>manager</code></td><td>业务主管</td><td>部门文件管理、审批、报表导出(12 项)</td></tr>
+        <tr><td><code>salesman</code></td><td>业务员</td><td>上传与管理自己负责客户的文件(8 项)</td></tr>
+        <tr><td><code>doc_clerk</code></td><td>单证员</td><td>OCR 核对、字段修正、文件关联(6 项)</td></tr>
+        <tr><td><code>finance</code></td><td>财务人员</td><td>查看银行水单/发票、导出财务数据(7 项)</td></tr>
+        <tr><td><code>readonly</code></td><td>只读访客</td><td>仅查看授权范围内文件(1 项)</td></tr>
+      </tbody>
+    </table>
+
+    <h4>权限模块(共 18 项)</h4>
+    <table>
+      <thead><tr><th>模块</th><th>权限项</th></tr></thead>
+      <tbody>
+        <tr><td>document (7)</td><td>upload, view, edit, delete, download, export, batch</td></tr>
+        <tr><td>review (2)</td><td>list, execute</td></tr>
+        <tr><td>approval (2)</td><td>submit, approve</td></tr>
+        <tr><td>report (2)</td><td>view, export</td></tr>
+        <tr><td>ai (1)</td><td>query</td></tr>
+        <tr><td>system (4)</td><td>config, user_manage, audit_log, notification_manage</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 8. 部署 -->
+    <h2 id="deploy">八、部署说明</h2>
+
+    <h4>环境要求</h4>
+    <table>
+      <thead><tr><th>组件</th><th>要求</th></tr></thead>
+      <tbody>
+        <tr><td>操作系统</td><td>Windows Server 2016+ / Windows 10+</td></tr>
+        <tr><td>phpStudy Pro</td><td>最新版(提供 Nginx + MySQL + PHP-CGI 池)</td></tr>
+        <tr><td>PHP</td><td>8.5.5 NTS x64 (VS17,需 VC++ 2022 运行库)</td></tr>
+        <tr><td>MySQL</td><td>8.0+</td></tr>
+        <tr><td>Nginx</td><td>1.15+</td></tr>
+        <tr><td>磁盘空间</td><td>至少 2GB(含 vendor、storage)</td></tr>
+        <tr><td>内存</td><td>至少 2GB</td></tr>
+        <tr><td>Python</td><td>3.10+(仅 OCR 服务需要,可选)</td></tr>
+      </tbody>
+    </table>
+
+    <h4>部署步骤</h4>
+    <ol class="step-list">
+      <li><strong>服务器准备</strong>:安装 phpStudy Pro;安装 VC++ 2022 运行库;解压 PHP 8.5.5 NTS 到 phpStudy 扩展目录</li>
+      <li><strong>复制项目</strong>:整个 <code>business_file_management</code> 目录复制到目标服务器(含 vendor),推荐路径 <code>C:\product\business_file_management\</code></li>
+      <li><strong>配置 .env</strong>:修改 <code>tradedoc/.env</code>:
+        <pre><code>APP_ENV=production
+APP_DEBUG=false
+APP_URL=http://服务器IP:8000
+DB_PASSWORD=实际密码</code></pre>
+      </li>
+      <li><strong>建库 + 导入数据</strong>:在 phpStudy MySQL 里建库并依次执行:
+        <ul>
+          <li><code>database/install.sql</code>(建表 + 初始数据)</li>
+          <li><code>database/fix_missing_tables.sql</code>(Laravel 内置表)</li>
+          <li><code>database/fix_spatie_tables.sql</code>(Spatie 权限表 + admin 绑定)</li>
+        </ul>
+      </li>
+      <li><strong>缓存 Laravel 配置</strong>:
+        <pre><code>cd 项目路径\tradedoc
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+php artisan storage:link</code></pre>
+      </li>
+      <li><strong>配置 Nginx 站点</strong>:phpStudy 面板 → 创建网站,端口 8000,根目录指向 <code>tradedoc/public</code>;替换 vhost.conf 为 <code>deploy/nginx_tradedoc.conf</code> 内容</li>
+      <li><strong>开 Windows 防火墙</strong>:
+        <pre><code>New-NetFirewallRule -DisplayName "TradeDoc HTTP 8000" `
+  -Direction Inbound -Protocol TCP -LocalPort 8000 `
+  -Action Allow -Profile Any</code></pre>
+      </li>
+      <li><strong>访问 + 登录</strong>:浏览器打开 <code>http://服务器IP:8000</code>,用 <code>admin/admin123</code> 登录</li>
+    </ol>
+
+    <h4>部署相关文件</h4>
+    <table>
+      <thead><tr><th>文件</th><th>用途</th></tr></thead>
+      <tbody>
+        <tr><td><code>deploy/README_DEPLOY.txt</code></td><td>完整部署指南</td></tr>
+        <tr><td><code>deploy/nginx_tradedoc.conf</code></td><td>Nginx 站点配置模板</td></tr>
+        <tr><td><code>deploy/server_install/php-8.5.5-nts-Win32-vs17-x64.zip</code></td><td>PHP 安装包</td></tr>
+        <tr><td><code>deploy/server_install/php.ini</code></td><td>已配好的 PHP 配置</td></tr>
+        <tr><td><code>database/install.sql</code></td><td>主建表脚本</td></tr>
+        <tr><td><code>database/fix_missing_tables.sql</code></td><td>Laravel 内置表补建</td></tr>
+        <tr><td><code>database/fix_spatie_tables.sql</code></td><td>Spatie 权限表 + 数据</td></tr>
+        <tr><td><code>start.bat</code></td><td>启动 Python OCR 服务</td></tr>
+        <tr><td><code>stop.bat</code></td><td>停止 Python OCR 服务</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 9. 运维 -->
+    <h2 id="ops">九、运维与故障排查</h2>
+
+    <h4>日常操作</h4>
+    <table>
+      <thead><tr><th>操作</th><th>方法</th></tr></thead>
+      <tbody>
+        <tr><td>启停 Nginx/MySQL/PHP</td><td>phpStudy 面板</td></tr>
+        <tr><td>启停 Python OCR</td><td><code>start.bat</code> / <code>stop.bat</code></td></tr>
+        <tr><td>查看 Laravel 错误日志</td><td><code>tradedoc/storage/logs/laravel.log</code></td></tr>
+        <tr><td>查看 Nginx 错误日志</td><td><code>phpstudy_pro/Extensions/Nginx{版本}/logs/tradedoc_error.log</code></td></tr>
+        <tr><td>查看 PHP 错误日志</td><td><code>phpstudy_pro/Extensions/php/php8.5.0nts/php_errors.log</code></td></tr>
+        <tr><td>修改 .env 后生效</td><td><code>php artisan config:cache</code></td></tr>
+        <tr><td>上传文件位置</td><td><code>tradedoc/storage/app/private/documents/年/月/类型/</code></td></tr>
+      </tbody>
+    </table>
+
+    <h4>备份对象</h4>
+    <ol>
+      <li><strong>数据库</strong> <code>tradedoc</code>(mysqldump 或 phpMyAdmin 导出)</li>
+      <li><strong>上传文件</strong> <code>tradedoc/storage/app/private/documents/</code></li>
+      <li><strong>环境配置</strong> <code>tradedoc/.env</code>、<code>tradedoc-python/.env</code></li>
+    </ol>
+
+    <h4>常见问题 FAQ</h4>
+
+    <blockquote>
+      <strong>Q1: 502 Bad Gateway?</strong><br>
+      原因:phpStudy 的 PHP-CGI 池死了。<br>
+      解决:phpStudy 面板重启 PHP;查 <code>tradedoc_error.log</code> 是否 9001 连接被拒。
+    </blockquote>
+
+    <blockquote>
+      <strong>Q2: 登录后 dashboard 报错?</strong><br>
+      原因:缓存的 config 跟实际不一致。<br>
+      解决:<code>php artisan config:clear &amp;&amp; php artisan config:cache</code>
+    </blockquote>
+
+    <blockquote>
+      <strong>Q3: 修改代码不生效?</strong><br>
+      Laravel 的 view/route/config 缓存需要清掉重建。如果只改了一个 PHP 文件,
+      OPcache 默认会自动重新编译(<code>opcache.validate_timestamps=1</code>)。
+    </blockquote>
+
+    <blockquote>
+      <strong>Q4: 上传文件大小超限?</strong><br>
+      改 <code>php.ini</code> 的 <code>upload_max_filesize</code> 和 <code>post_max_size</code>;
+      改 Nginx 配置的 <code>client_max_body_size</code>;重启 PHP 和 Nginx。
+    </blockquote>
+
+    <blockquote>
+      <strong>Q5: 局域网内其他电脑访问不到?</strong><br>
+      1. 检查 Nginx 是否监听 0.0.0.0(不是 127.0.0.1)<br>
+      2. 检查 Windows 防火墙是否开了 8000 端口<br>
+      3. 检查公司网络是否有 VLAN 隔离
+    </blockquote>
+
+    <blockquote>
+      <strong>Q6: MySQL 连不上?</strong><br>
+      检查 phpStudy MySQL 是否启动;检查 <code>.env</code> 里 <code>DB_PASSWORD</code> 是否正确;
+      跑 <code>php artisan db:show</code> 验证连接。
+    </blockquote>
+
+    <!-- 10. 文件类型 -->
+    <h2 id="filetypes">十、支持的文件类型</h2>
+    <table>
+      <thead>
+        <tr><th>编码</th><th>中文名</th><th>英文名</th><th>编号前缀</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>customs_declaration</code></td><td>报关单</td><td>Customs Declaration</td><td>D</td></tr>
+        <tr><td><code>commercial_invoice</code></td><td>商业发票</td><td>Commercial Invoice</td><td>INV</td></tr>
+        <tr><td><code>packing_list</code></td><td>装箱单</td><td>Packing List</td><td>PL</td></tr>
+        <tr><td><code>bank_receipt</code></td><td>银行水单</td><td>Bank Receipt</td><td>BK</td></tr>
+        <tr><td><code>bill_of_lading</code></td><td>提单/运单</td><td>Bill of Lading</td><td>BL</td></tr>
+        <tr><td><code>certificate_of_origin</code></td><td>原产地证</td><td>Certificate of Origin</td><td>CO</td></tr>
+        <tr><td><code>contract</code></td><td>合同协议</td><td>Contract</td><td>CT</td></tr>
+        <tr><td><code>letter_of_credit</code></td><td>信用证</td><td>Letter of Credit</td><td>LC</td></tr>
+        <tr><td><code>other</code></td><td>其他文件</td><td>Other Documents</td><td>DOC</td></tr>
+      </tbody>
+    </table>
+    <blockquote>
+      <strong>文件编号格式</strong>:<code>{前缀}{YYMMDD}-{4位序号}</code>,例:<code>D260428-0001</code>
+    </blockquote>
+
+    <!-- 11. 待开发 -->
+    <h2 id="todo">十一、待开发 / 占位功能</h2>
+    <table>
+      <thead><tr><th>模块</th><th>状态</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>审批工作流</td><td><span class="badge badge-warning">部分完成</span></td><td>数据库已设计,后端未实现 Controller 和 API</td></tr>
+        <tr><td>数据管道页面</td><td><span class="badge badge-warning">前端占位</span></td><td><code>/pipeline</code> 路由已注册,无后端 API</td></tr>
+        <tr><td>邮箱自动采集</td><td><span class="badge badge-danger">未实现</span></td><td><code>email_configs</code> 表已建,自动采集邮件附件功能未做</td></tr>
+        <tr><td>通知偏好设置</td><td><span class="badge badge-danger">未实现</span></td><td><code>notification_settings</code> 表已建,未暴露配置 API</td></tr>
+        <tr><td>跨文件异常告警</td><td><span class="badge badge-danger">未实现</span></td><td><code>anomaly_alerts</code> 表已建,跨文件比对未实现</td></tr>
+        <tr><td>文件版本管理</td><td><span class="badge badge-warning">基础实现</span></td><td>上传时记录版本,无版本回滚等高级功能</td></tr>
+        <tr><td>文件关联管理</td><td><span class="badge badge-warning">未暴露 API</span></td><td><code>document_relations</code> 表已建,同一票货分组未完整实现</td></tr>
+        <tr><td>文件标签</td><td><span class="badge badge-danger">未暴露 API</span></td><td><code>document_tags</code> 表已建,无增删改查 API</td></tr>
+        <tr><td>部门管理</td><td><span class="badge badge-danger">未实现</span></td><td><code>departments</code> 表已建,无管理界面和 API</td></tr>
+        <tr><td>用户-客户数据隔离</td><td><span class="badge badge-warning">部分实现</span></td><td>业务员只能看自己客户的文件</td></tr>
+        <tr><td>企微/钉钉/邮件推送</td><td><span class="badge badge-danger">未实现</span></td><td>配置已预留,实际推送未接入</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 页脚 -->
+    <div class="footer">
+      <p>
+        贸易云档 TradeDoc · 外贸文件智能管理系统<br>
+        文档版本 v2 · 更新时间 2026-04-28<br>
+        如需查看更详细的技术文档,请参考项目根目录 <code>PROJECT_DOCS.md</code>
+      </p>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  // 平滑滚动
+  document.querySelectorAll('.sidebar a').forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+================================================================
+  PHP 8.5.5 NTS x64 服务器安装指南
+================================================================
+
+【这个目录里有什么】
+
+  php-8.5.5-nts-Win32-vs17-x64.zip   ← 官方 PHP 安装包（34M）
+                                       SHA256: 107f64f689eec2a0966b4d8a42f0e34e8
+                                               dfa04c5097c9548e35fb951cba0a464
+  php.ini                            ← 已配好的 php.ini（Laravel 跑通的同款配置）
+  INSTALL_PHP.txt                    ← 本文档
+
+【官方下载来源】
+  https://downloads.php.net/~windows/releases/php-8.5.5-nts-Win32-vs17-x64.zip
+
+
+【安装步骤】
+
+1. 服务器上确保已装 phpStudy Pro
+
+2. 创建目标目录
+   D:\phpstudy_pro\Extensions\php\php8.5.0nts\
+   （如果 phpStudy 已经有这个目录就先备份原内容）
+
+3. 解压 php-8.5.5-nts-Win32-vs17-x64.zip 的所有内容到上面的目录
+   解压后该目录里应有：
+     php.exe
+     php-cgi.exe
+     php8apache2_4.dll
+     ext\          ← 扩展目录
+     ...
+
+4. 把本目录的 php.ini 也复制进去，覆盖默认的 php.ini-development
+   D:\phpstudy_pro\Extensions\php\php8.5.0nts\php.ini
+
+5. 检查 php.ini 内的两处绝对路径是否和服务器一致：
+     extension_dir = "D:/phpstudy_pro/Extensions/php/php8.5.0nts/ext"
+     error_log = D:/phpstudy_pro/Extensions/php/php8.5.0nts/php_errors.log
+   如果服务器装在 D:\ 以外，需要相应改路径。
+
+6. 安装 Visual C++ 2022 运行库（如果服务器没装）
+   下载: https://aka.ms/vs/17/release/vc_redist.x64.exe
+   双击安装。PHP 8.5.5 编译时依赖 VC++ 2022 运行库。
+
+7. 在 phpStudy 面板里
+   - 点「软件管理」→「PHP 版本」
+   - 找到 php8.5.0nts 并启动
+   - 记下端口号（默认 9002，已在 nginx 配置里写死）
+
+8. 验证
+   D:\phpstudy_pro\Extensions\php\php8.5.0nts\php.exe -v
+   应该输出 PHP 8.5.5 (cli) (NTS Visual C++ 2022 x64)
+
+   D:\phpstudy_pro\Extensions\php\php8.5.0nts\php.exe -m
+   应该看到 curl, openssl, mbstring, pdo_mysql, gd, intl 等扩展
+
+
+【哈希校验（推荐）】
+
+  在服务器上运行 PowerShell:
+
+  Get-FileHash php-8.5.5-nts-Win32-vs17-x64.zip -Algorithm SHA256
+
+  输出应该是:
+  107f64f689eec2a0966b4d8a42f0e34e8dfa04c5097c9548e35fb951cba0a464
+
+  不一致就重新下载。
+
+
+【常见问题】
+
+Q: phpStudy 面板里看不到 php8.5.0nts
+A: phpStudy 启动时扫描 Extensions/php 目录。重启 phpStudy 即可。
+
+Q: php.exe 启动报「找不到 VCRUNTIME140_1.dll」
+A: 没装 Visual C++ 2022 运行库。装一下 vc_redist.x64.exe（见步骤 6）。
+
+Q: phpStudy 启动 PHP 后，端口不是 9002
+A: phpStudy 自己分配。在面板「PHP 版本」里能看到实际端口。
+   修改 deploy/nginx_tradedoc.conf 里 upstream 的端口号即可。
+
+Q: 是否需要装 Composer
+A: 不需要（vendor/ 目录已经打包在项目里）。
+   只有在服务器上跑 composer install 时才用得到。建议直接复制 vendor/ 过去。

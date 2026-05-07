@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>外贸文件智能管理系统 — 产品文档 v1.0</title>
+<style>
+  :root {
+    --blue-50: #E6F1FB;
+    --blue-200: #85B7EB;
+    --blue-600: #185FA5;
+    --blue-800: #0C447C;
+    --teal-50: #E1F5EE;
+    --teal-600: #0F6E56;
+    --teal-800: #085041;
+    --amber-50: #FAEEDA;
+    --amber-600: #854F0B;
+    --coral-50: #FAECE7;
+    --coral-600: #993C1D;
+    --green-50: #EAF3DE;
+    --green-600: #3B6D11;
+    --gray-50: #F1EFE8;
+    --gray-100: #D3D1C7;
+    --gray-400: #888780;
+    --gray-600: #5F5E5A;
+    --gray-800: #444441;
+    --text-primary: #1a1a18;
+    --text-secondary: #5F5E5A;
+    --text-tertiary: #888780;
+    --border: #e2e0d8;
+    --bg: #ffffff;
+    --bg-secondary: #f8f7f4;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--text-primary);
+    background: #f4f3ef;
+  }
+
+  .page-wrap {
+    max-width: 960px;
+    margin: 0 auto;
+    background: var(--bg);
+    min-height: 100vh;
+    box-shadow: 0 0 40px rgba(0,0,0,0.06);
+  }
+
+  /* Cover */
+  .cover {
+    background: #0C447C;
+    padding: 64px 56px 52px;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::before {
+    content: '';
+    position: absolute;
+    right: -60px; top: -60px;
+    width: 360px; height: 360px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+  }
+  .cover::after {
+    content: '';
+    position: absolute;
+    right: 80px; bottom: -80px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.03);
+  }
+  .cover-tag {
+    display: inline-block;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 4px 10px;
+    border-radius: 4px;
+    margin-bottom: 24px;
+    color: rgba(255,255,255,0.75);
+  }
+  .cover h1 {
+    font-size: 34px;
+    font-weight: 600;
+    line-height: 1.25;
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
+  }
+  .cover h1 span { color: #85B7EB; }
+  .cover-sub {
+    font-size: 16px;
+    color: rgba(255,255,255,0.65);
+    margin-bottom: 36px;
+    max-width: 500px;
+  }
+  .cover-meta {
+    display: flex;
+    gap: 32px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 20px;
+  }
+  .cover-meta span strong { color: rgba(255,255,255,0.85); display: block; font-size: 12px; margin-bottom: 2px; }
+
+  /* TOC */
+  .toc {
+    background: var(--bg-secondary);
+    padding: 32px 56px;
+    border-bottom: 1px solid var(--border);
+  }
+  .toc-title {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    margin-bottom: 16px;
+  }
+  .toc-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 32px;
+    list-style: none;
+  }
+  .toc-list li a {
+    font-size: 13px;
+    color: var(--blue-600);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .toc-list li a:hover { text-decoration: underline; }
+  .toc-num {
+    font-size: 11px;
+    color: var(--text-tertiary);
+    min-width: 20px;
+  }
+
+  /* Body */
+  .body { padding: 0 56px 64px; }
+
+  /* Sections */
+  .section { margin-top: 52px; }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-num {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    background: #0C447C;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .section-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+  .section-title-en {
+    font-size: 12px;
+    color: var(--text-tertiary);
+    margin-top: 1px;
+  }
+
+  h3 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 24px 0 10px;
+  }
+
+  p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.75; }
+
+  /* Callout */
+  .callout {
+    border-left: 3px solid #378ADD;
+    background: var(--blue-50);
+    padding: 14px 18px;
+    border-radius: 0 8px 8px 0;
+    margin: 20px 0;
+    font-size: 14px;
+    color: var(--blue-800);
+    line-height: 1.65;
+  }
+  .callout.amber { border-color: #EF9F27; background: var(--amber-50); color: var(--amber-600); }
+  .callout.green { border-color: #1D9E75; background: var(--teal-50); color: var(--teal-800); }
+
+  /* Badge */
+  .badge {
+    display: inline-block;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-weight: 500;
+    vertical-align: middle;
+    margin: 0 2px;
+  }
+  .b-blue { background: var(--blue-50); color: var(--blue-600); }
+  .b-green { background: var(--green-50); color: var(--green-600); }
+  .b-amber { background: var(--amber-50); color: var(--amber-600); }
+  .b-gray { background: var(--gray-50); color: var(--gray-600); }
+  .b-coral { background: var(--coral-50); color: var(--coral-600); }
+
+  /* Card Grid */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .card-grid-2 { grid-template-columns: 1fr 1fr; }
+  .card-grid-4 { grid-template-columns: repeat(4, 1fr); }
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    background: var(--bg);
+  }
+  .card-icon {
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+  .card-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+  }
+  .card-name-en {
+    font-size: 11px;
+    color: var(--text-tertiary);
+    margin-bottom: 6px;
+  }
+  .card-desc {
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  /* Table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin: 16px 0;
+  }
+  th {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-tertiary);
+    text-align: left;
+    padding: 8px 12px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+  }
+  td {
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    vertical-align: top;
+  }
+  tr:hover td { background: var(--bg-secondary); }
+
+  /* Pipeline */
+  .pipeline {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    margin: 20px 0;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .pipe-step {
+    flex: 1;
+    padding: 16px 12px;
+    text-align: center;
+    border-right: 1px solid var(--border);
+    background: var(--bg);
+    position: relative;
+  }
+  .pipe-step:last-child { border-right: none; }
+  .pipe-step-num {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: #378ADD;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 8px;
+  }
+  .pipe-step-name { font-size: 12px; font-weight: 600; color: var(--text-primary); }
+  .pipe-step-sub { font-size: 10px; color: var(--text-tertiary); margin-top: 3px; line-height: 1.4; }
+
+  /* Metrics */
+  .metrics {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .metric {
+    background: var(--bg-secondary);
+    border-radius: 10px;
+    padding: 16px;
+    text-align: center;
+  }
+  .metric-value {
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .metric-label { font-size: 11px; color: var(--text-tertiary); }
+
+  /* Flywheel */
+  .flywheel {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin: 16px 0;
+  }
+  .flywheel-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 14px;
+  }
+  .flywheel-steps {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .fw-step {
+    background: var(--blue-50);
+    color: var(--blue-800);
+    font-size: 12px;
+    font-weight: 500;
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--blue-200);
+  }
+  .fw-arrow { color: var(--text-tertiary); font-size: 14px; }
+
+  /* Field table highlight */
+  .field-required { color: #D85A30; font-size: 11px; }
+  .field-auto { color: #1D9E75; font-size: 11px; }
+  .field-manual { color: #EF9F27; font-size: 11px; }
+
+  /* Footer */
+  .doc-footer {
+    border-top: 1px solid var(--border);
+    padding: 28px 56px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bg-secondary);
+  }
+  .footer-brand { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+  .footer-meta { font-size: 12px; color: var(--text-tertiary); }
+
+  /* Print */
+  @media print {
+    .page-wrap { box-shadow: none; }
+    .cover { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-wrap">
+
+  <!-- Cover -->
+  <div class="cover">
+    <div class="cover-tag">Product Requirements Document</div>
+    <h1>外贸文件<span>智能管理系统</span><br>TradeDoc Intelligence Platform</h1>
+    <div class="cover-sub">面向外贸企业的电子化文件存储、大数据清洗与业务大模型训练一体化平台</div>
+    <div class="cover-meta">
+      <div><span><strong>版本</strong>v1.0</span></div>
+      <div><span><strong>状态</strong>需求评审阶段</span></div>
+      <div><span><strong>更新日期</strong>2024-07</span></div>
+      <div><span><strong>目标用户</strong>外贸企业全员</span></div>
+    </div>
+  </div>
+
+  <!-- TOC -->
+  <div class="toc">
+    <div class="toc-title">目录 Contents</div>
+    <ul class="toc-list">
+      <li><a href="#s1"><span class="toc-num">01</span>产品背景与定位</a></li>
+      <li><a href="#s5"><span class="toc-num">05</span>核心功能模块详述</a></li>
+      <li><a href="#s2"><span class="toc-num">02</span>核心痛点</a></li>
+      <li><a href="#s6"><span class="toc-num">06</span>用户角色与权限体系</a></li>
+      <li><a href="#s3"><span class="toc-num">03</span>支持的文件类型</a></li>
+      <li><a href="#s7"><span class="toc-num">07</span>审批与工作流</a></li>
+      <li><a href="#s4"><span class="toc-num">04</span>产品架构总览</a></li>
+      <li><a href="#s8"><span class="toc-num">08</span>操作日志与审计追踪</a></li>
+      <li><a href="#s9"><span class="toc-num">09</span>通知与消息机制</a></li>
+      <li><a href="#s10"><span class="toc-num">10</span>数据管道设计</a></li>
+      <li><a href="#s11"><span class="toc-num">11</span>业务大模型层</a></li>
+      <li><a href="#s12"><span class="toc-num">12</span>非功能性需求 &amp; 扩展规划</a></li>
+    </ul>
+  </div>
+
+  <div class="body">
+
+    <!-- 01 背景定位 -->
+    <div class="section" id="s1">
+      <div class="section-header">
+        <div class="section-num">01</div>
+        <div>
+          <div class="section-title">产品背景与定位</div>
+          <div class="section-title-en">Background &amp; Positioning</div>
+        </div>
+      </div>
+      <p>外贸企业在日常运营中会产生大量高价值单据，包括报关单、商业发票、装箱单、银行水单、提单等。这些文件目前多以纸质或散乱电子文件形式存在，查询困难、数据沉睡、无法被二次利用。</p>
+      <p>本系统定位为<strong>外贸企业文件数字化基础设施</strong>，以电子化归档为起点，逐步构建结构化数据资产，最终通过大数据技术清洗整理，持续训练企业私有业务大模型，形成数据飞轮效应。</p>
+
+      <div class="flywheel">
+        <div class="flywheel-title">数据飞轮 — 核心价值逻辑</div>
+        <div class="flywheel-steps">
+          <div class="fw-step">📄 文件归档</div>
+          <div class="fw-arrow">→</div>
+          <div class="fw-step">🔍 OCR 提取</div>
+          <div class="fw-arrow">→</div>
+          <div class="fw-step">🧹 数据清洗</div>
+          <div class="fw-arrow">→</div>
+          <div class="fw-step">🏗️ 入数仓</div>
+          <div class="fw-arrow">→</div>
+          <div class="fw-step">🤖 训练大模型</div>
+          <div class="fw-arrow">→</div>
+          <div class="fw-step">📈 辅助决策</div>
+          <div class="fw-arrow">↩</div>
+          <div class="fw-step">更多文件沉淀</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 02 痛点 -->
+    <div class="section" id="s2">
+      <div class="section-header">
+        <div class="section-num">02</div>
+        <div>
+          <div class="section-title">核心痛点</div>
+          <div class="section-title-en">Problem Statement</div>
+        </div>
+      </div>
+      <div class="card-grid card-grid-2" style="grid-template-columns:1fr 1fr;">
+        <div class="card">
+          <div class="card-icon">📦</div>
+          <div class="card-name">文件散乱，查询困难</div>
+          <div class="card-desc">纸质单据与电子文件混存，按订单号、客户名查找耗时，跨部门协作时文件传递效率低。</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">💤</div>
+          <div class="card-name">数据沉睡，无法复用</div>
+          <div class="card-desc">报关单、发票中包含大量结构化数据（金额、HS编码、重量等），但以图片或PDF形式封存，无法统计分析。</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">⚠️</div>
+          <div class="card-name">人工核对，错误率高</div>
+          <div class="card-desc">发票与报关单金额、箱单与提单数量是否一致，依赖人工逐一比对，费时且易出错，合规风险大。</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🧠</div>
+          <div class="card-name">决策缺乏数据支撑</div>
+          <div class="card-desc">市场趋势、客户贡献、商品结构等分析需手动整理报表，无法及时响应业务变化，大模型能力无从建立。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 03 文件类型 -->
+    <div class="section" id="s3">
+      <div class="section-header">
+        <div class="section-num">03</div>
+        <div>
+          <div class="section-title">支持的文件类型</div>
+          <div class="section-title-en">Supported Document Types</div>
+        </div>
+      </div>
+      <p>系统覆盖外贸业务全流程单据，每种文件类型内置专属字段提取模板：</p>
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon">🗂️</div>
+          <div class="card-name">报关单</div>
+          <div class="card-name-en">Customs Declaration</div>
+          <div class="card-desc">报关单号、申报日期、HS编码、货物名称、成交金额、贸易方式、运输方式等</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🧾</div>
+          <div class="card-name">商业发票</div>
+          <div class="card-name-en">Commercial Invoice</div>
+          <div class="card-desc">发票号、开票日期、买卖双方、商品描述、单价、总价、货币、付款条件等</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">📦</div>
+          <div class="card-name">装箱单</div>
+          <div class="card-name-en">Packing List</div>
+          <div class="card-desc">箱号、件数、毛重、净重、体积、货物描述、唛头等</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🏦</div>
+          <div class="card-name">银行水单</div>
+          <div class="card-name-en">Bank Receipt</div>
+          <div class="card-desc">流水号、交易日期、金额、币种、汇率、对手方账户、用途等</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🚢</div>
+          <div class="card-name">提单 / 运单</div>
+          <div class="card-name-en">Bill of Lading</div>
+          <div class="card-desc">提单号、船公司、装卸港、货物描述、箱型箱量、签发日期等</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🌍</div>
+          <div class="card-name">原产地证</div>
+          <div class="card-name-en">Certificate of Origin</div>
+          <div class="card-desc">证书编号、签发机构、货物描述、原产地、签发日期等</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">📝</div>
+          <div class="card-name">合同协议</div>
+          <div class="card-name-en">Contract</div>
+          <div class="card-desc">合同号、签约日期、合同金额、付款条款、交货条款、违约条款等</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">💳</div>
+          <div class="card-name">信用证</div>
+          <div class="card-name-en">Letter of Credit</div>
+          <div class="card-desc">L/C号、开证行、受益人、金额、有效期、单据条款等</div>
+        </div>
+        <div class="card" style="border-style:dashed;">
+          <div class="card-icon">➕</div>
+          <div class="card-name">其他文件</div>
+          <div class="card-name-en">Other Documents</div>
+          <div class="card-desc">可自定义字段模板，适配企业特定业务单据类型</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 04 架构总览 -->
+    <div class="section" id="s4">
+      <div class="section-header">
+        <div class="section-num">04</div>
+        <div>
+          <div class="section-title">产品架构总览</div>
+          <div class="section-title-en">System Architecture Overview</div>
+        </div>
+      </div>
+      <p>系统分为三层架构：文件管理层、数据处理层、智能应用层，各层相互解耦，数据自下而上流动。</p>
+      <table>
+        <thead>
+          <tr>
+            <th>层级</th>
+            <th>模块</th>
+            <th>核心能力</th>
+            <th>输出</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td rowspan="2" style="font-weight:600;color:var(--blue-600)">应用层</td>
+            <td>业务大模型</td>
+            <td>自然语言查询、异常检测、趋势分析</td>
+            <td>智能问答 / 报告 / 预警</td>
+          </tr>
+          <tr>
+            <td>BI 分析看板</td>
+            <td>可视化统计、多维钻取、导出报表</td>
+            <td>业务报表 / 决策支撑</td>
+          </tr>
+          <tr>
+            <td rowspan="2" style="font-weight:600;color:var(--teal-600)">数据层</td>
+            <td>数据仓库</td>
+            <td>结构化存储、跨文件关联、版本管理</td>
+            <td>结构化数据集</td>
+          </tr>
+          <tr>
+            <td>数据管道</td>
+            <td>清洗、标准化、去重、字段映射</td>
+            <td>高质量训练数据</td>
+          </tr>
+          <tr>
+            <td rowspan="3" style="font-weight:600;color:var(--amber-600)">文件层</td>
+            <td>OCR 识别引擎</td>
+            <td>多语言文字提取、版面分析</td>
+            <td>原始字段文本</td>
+          </tr>
+          <tr>
+            <td>文件管理模块</td>
+            <td>归档、检索、关联、权限控制</td>
+            <td>电子化文件库</td>
+          </tr>
+          <tr>
+            <td>文件采集入口</td>
+            <td>手动上传、邮件采集、API 对接</td>
+            <td>原始文件</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 05 功能模块 -->
+    <div class="section" id="s5">
+      <div class="section-header">
+        <div class="section-num">05</div>
+        <div>
+          <div class="section-title">核心功能模块详述</div>
+          <div class="section-title-en">Feature Specifications</div>
+        </div>
+      </div>
+
+      <h3>5.1 文件采集与录入</h3>
+      <p>支持多种文件采集方式，满足不同场景需求：</p>
+      <table>
+        <thead><tr><th>采集方式</th><th>说明</th><th>支持格式</th><th>优先级</th></tr></thead>
+        <tbody>
+          <tr><td>手动上传</td><td>用户在系统内直接拖拽或点击上传文件</td><td>PDF、JPG、PNG、Word、Excel</td><td><span class="badge b-coral">P0</span></td></tr>
+          <tr><td>邮件自动采集</td><td>绑定企业邮箱，自动识别附件并入库</td><td>邮件附件各格式</td><td><span class="badge b-amber">P1</span></td></tr>
+          <tr><td>API 对接</td><td>与 ERP / 海关系统打通，自动同步文件</td><td>JSON / XML</td><td><span class="badge b-gray">P2</span></td></tr>
+          <tr><td>扫描仪对接</td><td>企业局域网扫描仪直接推送至系统</td><td>PDF / TIFF</td><td><span class="badge b-gray">P2</span></td></tr>
+        </tbody>
+      </table>
+
+      <h3>5.2 智能字段提取（OCR + NLP）</h3>
+      <p>上传后自动触发识别流水线，关键字段无需人工录入：</p>
+      <div class="callout">
+        目标识别率：OCR 文字识别 ≥ 98%，关键字段自动提取率 ≥ 94%，低置信度字段自动推送人工核对队列，确保数据质量。
+      </div>
+      <table>
+        <thead><tr><th>以报关单为例</th><th>字段类型</th><th>提取方式</th><th>备注</th></tr></thead>
+        <tbody>
+          <tr><td>报关单号</td><td>String</td><td><span class="field-auto">● 自动提取</span></td><td>正则 + 模板匹配</td></tr>
+          <tr><td>申报日期</td><td>Date</td><td><span class="field-auto">● 自动提取</span></td><td>标准化为 YYYY-MM-DD</td></tr>
+          <tr><td>HS 编码</td><td>String</td><td><span class="field-auto">● 自动提取</span></td><td>8/10位格式校验</td></tr>
+          <tr><td>成交金额</td><td>Decimal</td><td><span class="field-auto">● 自动提取</span></td><td>含币种识别</td></tr>
+          <tr><td>货物名称</td><td>String</td><td><span class="field-auto">● 自动提取</span></td><td>中英文均支持</td></tr>
+          <tr><td>贸易方式</td><td>Enum</td><td><span class="field-manual">⚠ 人工确认</span></td><td>置信度低时推送核对</td></tr>
+          <tr><td>监管条件</td><td>String</td><td><span class="field-manual">⚠ 人工确认</span></td><td>可选字段，按需录入</td></tr>
+        </tbody>
+      </table>
+
+      <h3>5.3 文件管理与检索</h3>
+      <p>电子化归档后的文件支持多维度管理：</p>
+      <div class="card-grid card-grid-2" style="margin-top:12px;">
+        <div class="card">
+          <div class="card-name">多维检索</div>
+          <div class="card-desc">按文件类型、日期范围、客户/供应商名称、关联订单号、金额区间全文检索，支持模糊匹配。</div>
+        </div>
+        <div class="card">
+          <div class="card-name">跨文件关联</div>
+          <div class="card-desc">同一票货的发票、装箱单、提单、报关单自动关联为一组，点击任意文件可查看全套单据。</div>
+        </div>
+        <div class="card">
+          <div class="card-name">版本管理</div>
+          <div class="card-desc">支持同一文件的修订版本留存，可比对任意两个版本的字段差异，满足审计需求。</div>
+        </div>
+        <div class="card">
+          <div class="card-name">权限控制</div>
+          <div class="card-desc">按角色（管理员/业务员/财务/只读）分配文件类型访问权限，支持部门级数据隔离。详见第06章。</div>
+        </div>
+      </div>
+
+      <h3>5.4 文件预览与标注</h3>
+      <p>归档文件支持在线预览和可视化标注，减少下载操作，提升核对效率：</p>
+      <div class="card-grid card-grid-2" style="margin-top:12px;">
+        <div class="card">
+          <div class="card-name">在线预览</div>
+          <div class="card-desc">支持 PDF、JPG、PNG、Word、Excel 等格式在线预览，无需下载即可查看文件内容，加载时间 &lt; 2秒。</div>
+        </div>
+        <div class="card">
+          <div class="card-name">OCR 标注叠加</div>
+          <div class="card-desc">在原件上以半透明高亮框标注 OCR 提取位置，点击高亮区域可直接跳转到对应字段编辑。</div>
+        </div>
+        <div class="card">
+          <div class="card-name">人工圈注修正</div>
+          <div class="card-desc">核对人员可在文件预览上用画笔圈注有疑问的区域，添加批注说明，批注随文件版本保存。</div>
+        </div>
+        <div class="card">
+          <div class="card-name">双栏对照视图</div>
+          <div class="card-desc">左侧展示原件图像，右侧展示提取后的结构化字段表单，支持逐字段定位对照。</div>
+        </div>
+      </div>
+
+      <h3>5.5 批量操作</h3>
+      <p>针对外贸业务中频繁的批量处理需求：</p>
+      <table>
+        <thead><tr><th>批量操作</th><th>说明</th><th>限制</th><th>优先级</th></tr></thead>
+        <tbody>
+          <tr><td>批量上传</td><td>一次拖拽多个文件，系统自动识别每个文件类型并分别进入 OCR 流水线</td><td>单次最多 50 个文件</td><td><span class="badge b-coral">P0</span></td></tr>
+          <tr><td>批量导出</td><td>按筛选条件（日期、类型、客户、订单号）勾选文件，打包下载原件或导出结构化数据 Excel</td><td>单次最大 500MB</td><td><span class="badge b-coral">P0</span></td></tr>
+          <tr><td>批量打印</td><td>选择一票货物的全套单据一键打印，自动按报关单→发票→箱单→提单排序</td><td>—</td><td><span class="badge b-amber">P1</span></td></tr>
+          <tr><td>批量状态变更</td><td>管理员可对筛选后的多个文件批量执行归档、作废等操作</td><td>需二次确认</td><td><span class="badge b-amber">P1</span></td></tr>
+          <tr><td>批量核对</td><td>同一票货的多文件在同一界面交叉比对，一次性确认所有字段</td><td>—</td><td><span class="badge b-amber">P1</span></td></tr>
+        </tbody>
+      </table>
+
+      <h3>5.6 多语言支持</h3>
+      <table>
+        <thead><tr><th>能力</th><th>说明</th><th>优先级</th></tr></thead>
+        <tbody>
+          <tr><td>OCR 语种</td><td>中文、英文（P0），日文、韩文（P1），阿拉伯文、西班牙文、法文（P2）</td><td>分阶段</td></tr>
+          <tr><td>界面语言</td><td>简体中文（默认）、English（P1），可在用户设置中切换</td><td><span class="badge b-amber">P1</span></td></tr>
+          <tr><td>智能语种检测</td><td>上传时自动识别文件语种，匹配对应 OCR 模型，无需手动选择</td><td><span class="badge b-coral">P0</span></td></tr>
+          <tr><td>小语种降级</td><td>不支持的语种自动标记为"需人工录入"，不强制 OCR 避免产生错误数据</td><td><span class="badge b-coral">P0</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 06 用户角色与权限体系 -->
+    <div class="section" id="s6">
+      <div class="section-header">
+        <div class="section-num">06</div>
+        <div>
+          <div class="section-title">用户角色与权限体系</div>
+          <div class="section-title-en">User Roles &amp; Permissions</div>
+        </div>
+      </div>
+      <p>系统采用 RBAC（基于角色的访问控制）模型，支持多层级权限管理，确保数据安全和业务合规。</p>
+
+      <h3>6.1 角色定义</h3>
+      <table>
+        <thead><tr><th>角色</th><th>典型岗位</th><th>核心权限</th><th>数据范围</th></tr></thead>
+        <tbody>
+          <tr><td><span class="badge b-coral">超级管理员</span></td><td>IT负责人 / 总经理</td><td>全部功能 + 系统配置 + 用户管理 + 审计日志</td><td>全公司</td></tr>
+          <tr><td><span class="badge b-blue">业务主管</span></td><td>外贸经理 / 部门主管</td><td>文件管理 + 审批 + 报表导出 + AI问答</td><td>本部门</td></tr>
+          <tr><td><span class="badge b-green">业务员</span></td><td>外贸业务员 / 跟单员</td><td>上传文件 + 查看/编辑自己的文件 + AI问答</td><td>本人负责的客户/订单</td></tr>
+          <tr><td><span class="badge b-amber">单证员</span></td><td>单证操作 / 报关员</td><td>上传文件 + OCR核对 + 字段修改 + 文件关联</td><td>本部门所有文件</td></tr>
+          <tr><td><span class="badge b-gray">财务人员</span></td><td>财务 / 出纳</td><td>查看银行水单/发票 + 导出财务数据 + 收付款核销</td><td>财务类文件</td></tr>
+          <tr><td><span class="badge b-gray">只读访客</span></td><td>审计 / 外部合作方</td><td>仅查看指定文件，不可编辑/下载/导出</td><td>按需授权</td></tr>
+        </tbody>
+      </table>
+
+      <h3>6.2 功能权限矩阵</h3>
+      <table>
+        <thead><tr><th>功能模块</th><th>超级管理员</th><th>业务主管</th><th>业务员</th><th>单证员</th><th>财务</th><th>只读</th></tr></thead>
+        <tbody>
+          <tr><td>上传文件</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>—</td></tr>
+          <tr><td>编辑/修改字段</td><td>✓</td><td>✓</td><td>本人文件</td><td>✓</td><td>—</td><td>—</td></tr>
+          <tr><td>删除文件</td><td>✓</td><td>审批后</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+          <tr><td>审批文件</td><td>✓</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+          <tr><td>导出数据</td><td>✓</td><td>✓</td><td>本人数据</td><td>—</td><td>财务数据</td><td>—</td></tr>
+          <tr><td>AI 智能问答</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>—</td></tr>
+          <tr><td>系统设置</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+          <tr><td>审计日志</td><td>✓</td><td>本部门</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+        </tbody>
+      </table>
+
+      <h3>6.3 数据隔离策略</h3>
+      <div class="card-grid card-grid-2" style="margin-top:12px;">
+        <div class="card">
+          <div class="card-name">部门级隔离</div>
+          <div class="card-desc">不同业务部门的文件默认互不可见，业务主管仅能查看本部门数据。跨部门共享需管理员授权。</div>
+        </div>
+        <div class="card">
+          <div class="card-name">客户级隔离</div>
+          <div class="card-desc">业务员仅能查看自己负责的客户/订单相关文件，避免业务员之间交叉查看客户信息。</div>
+        </div>
+        <div class="card">
+          <div class="card-name">文件类型隔离</div>
+          <div class="card-desc">财务人员仅能访问银行水单、发票等财务类文件，不可查看合同条款细节等商务敏感信息。</div>
+        </div>
+        <div class="card">
+          <div class="card-name">临时授权机制</div>
+          <div class="card-desc">支持管理员对只读访客授予限时、限范围的文件访问权限，到期自动回收，适用于审计场景。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 07 审批与工作流 -->
+    <div class="section" id="s7">
+      <div class="section-header">
+        <div class="section-num">07</div>
+        <div>
+          <div class="section-title">审批与工作流</div>
+          <div class="section-title-en">Approval &amp; Workflow</div>
+        </div>
+      </div>
+      <p>外贸单据涉及合规和财务准确性，系统内建文件全生命周期状态流转和多级审批机制。</p>
+
+      <h3>7.1 文件状态流转</h3>
+      <div class="pipeline">
+        <div class="pipe-step">
+          <div class="pipe-step-num">1</div>
+          <div class="pipe-step-name">草稿</div>
+          <div class="pipe-step-sub">已上传未提交</div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-step-num">2</div>
+          <div class="pipe-step-name">待OCR</div>
+          <div class="pipe-step-sub">提交后自动识别</div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-step-num">3</div>
+          <div class="pipe-step-name">待核对</div>
+          <div class="pipe-step-sub">低置信度字段待确认</div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-step-num">4</div>
+          <div class="pipe-step-name">待审核</div>
+          <div class="pipe-step-sub">核对完成待主管审批</div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-step-num">5</div>
+          <div class="pipe-step-name">已归档</div>
+          <div class="pipe-step-sub">审核通过入库</div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-step-num">6</div>
+          <div class="pipe-step-name">已作废</div>
+          <div class="pipe-step-sub">标记无效保留记录</div>
+        </div>
+      </div>
+
+      <h3>7.2 审批规则配置</h3>
+      <table>
+        <thead><tr><th>审批场景</th><th>触发条件</th><th>审批层级</th><th>超时策略</th></tr></thead>
+        <tbody>
+          <tr><td>普通文件归档</td><td>OCR核对完成后自动提交</td><td>业务主管一级审批</td><td>24h未审批自动提醒</td></tr>
+          <tr><td>金额超限文件</td><td>单笔金额 ≥ USD 50,000</td><td>业务主管 + 总经理二级审批</td><td>48h未审批升级通知</td></tr>
+          <tr><td>字段修改</td><td>已归档文件的字段被修改</td><td>业务主管审批</td><td>修改前后对比展示</td></tr>
+          <tr><td>文件删除/作废</td><td>任何文件标记作废</td><td>业务主管 + 管理员审批</td><td>保留完整操作记录</td></tr>
+        </tbody>
+      </table>
+      <div class="callout">
+        <strong>灵活配置：</strong>审批规则支持管理员在系统设置中自定义，可按文件类型、金额阈值、部门分别配置不同的审批流程，无需开发介入。
+      </div>
+
+      <h3>7.3 人工核对任务分配</h3>
+      <div class="card-grid card-grid-2" style="margin-top:12px;">
+        <div class="card">
+          <div class="card-name">自动派单</div>
+          <div class="card-desc">OCR置信度低于阈值的字段自动生成核对任务，按文件类型匹配对应单证员，均衡分配工作量。</div>
+        </div>
+        <div class="card">
+          <div class="card-name">任务队列</div>
+          <div class="card-desc">单证员登录后看到待核对任务列表，按优先级（紧急程度、文件金额、等待时长）排序。</div>
+        </div>
+        <div class="card">
+          <div class="card-name">超时转派</div>
+          <div class="card-desc">核对任务超过4小时未处理，自动转派给同组其他单证员或升级通知业务主管。</div>
+        </div>
+        <div class="card">
+          <div class="card-name">批量核对</div>
+          <div class="card-desc">同一票货物的多个文件支持批量核对模式，在同一界面完成发票+箱单+提单的交叉比对。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 08 操作日志与审计追踪 -->
+    <div class="section" id="s8">
+      <div class="section-header">
+        <div class="section-num">08</div>
+        <div>
+          <div class="section-title">操作日志与审计追踪</div>
+          <div class="section-title-en">Audit Trail &amp; Activity Logs</div>
+        </div>
+      </div>
+      <p>满足外贸合规审查和内部风控要求，系统记录所有关键操作的完整审计链。</p>
+
+      <h3>8.1 日志记录范围</h3>
+      <table>
+        <thead><tr><th>操作类别</th><th>记录内容</th><th>保留期限</th></tr></thead>
+        <tbody>
+          <tr><td>文件操作</td><td>上传、查看、下载、编辑、删除、作废、导出</td><td>永久保留</td></tr>
+          <tr><td>字段修改</td><td>修改人、修改时间、字段名、修改前值、修改后值</td><td>永久保留</td></tr>
+          <tr><td>审批操作</td><td>审批人、审批时间、审批结论（通过/驳回）、审批意见</td><td>永久保留</td></tr>
+          <tr><td>用户操作</td><td>登录、登出、密码修改、角色变更</td><td>3 年</td></tr>
+          <tr><td>系统配置</td><td>模板修改、审批规则变更、用户权限变更</td><td>3 年</td></tr>
+          <tr><td>数据管道</td><td>OCR处理结果、清洗规则执行记录、异常标记</td><td>1 年</td></tr>
+        </tbody>
+      </table>
+
+      <h3>8.2 审计报告导出</h3>
+      <div class="card-grid card-grid-2" style="margin-top:12px;">
+        <div class="card">
+          <div class="card-name">文件操作报告</div>
+          <div class="card-desc">按时间范围导出指定文件或全部文件的操作历史，支持按操作人、操作类型筛选，输出 Excel/PDF。</div>
+        </div>
+        <div class="card">
+          <div class="card-name">字段变更报告</div>
+          <div class="card-desc">导出指定文件的全部字段修改记录，含修改前后值对比，满足海关审计和内部风控需求。</div>
+        </div>
+        <div class="card">
+          <div class="card-name">用户行为分析</div>
+          <div class="card-desc">统计各用户的操作频次、常用功能、异常行为（如频繁导出、非工作时间操作），辅助安全管理。</div>
+        </div>
+        <div class="card">
+          <div class="card-name">合规自检报告</div>
+          <div class="card-desc">一键生成合规检查报告，列出未归档超期文件、缺少关联文件的订单、字段空值率超标记录。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 09 通知与消息机制 -->
+    <div class="section" id="s9">
+      <div class="section-header">
+        <div class="section-num">09</div>
+        <div>
+          <div class="section-title">通知与消息机制</div>
+          <div class="section-title-en">Notification &amp; Messaging</div>
+        </div>
+      </div>
+      <p>外贸业务时效性强，系统通过多渠道消息推送确保关键事件及时触达相关人员。</p>
+
+      <h3>9.1 通知触发场景</h3>
+      <table>
+        <thead><tr><th>通知场景</th><th>接收人</th><th>通知渠道</th><th>优先级</th></tr></thead>
+        <tbody>
+          <tr><td>OCR 识别完成</td><td>上传人</td><td>站内信</td><td><span class="badge b-gray">普通</span></td></tr>
+          <tr><td>低置信度字段需核对</td><td>单证员</td><td>站内信 + 企微/钉钉</td><td><span class="badge b-amber">中</span></td></tr>
+          <tr><td>待审批文件到达</td><td>审批人</td><td>站内信 + 企微/钉钉</td><td><span class="badge b-amber">中</span></td></tr>
+          <tr><td>审批通过/驳回</td><td>提交人</td><td>站内信</td><td><span class="badge b-gray">普通</span></td></tr>
+          <tr><td>跨文件异常告警</td><td>业务员 + 主管</td><td>站内信 + 企微/钉钉 + 邮件</td><td><span class="badge b-coral">紧急</span></td></tr>
+          <tr><td>核对任务超时</td><td>单证员 + 主管</td><td>站内信 + 企微/钉钉</td><td><span class="badge b-coral">紧急</span></td></tr>
+          <tr><td>文件归档超期（>7天未归档）</td><td>业务员 + 主管</td><td>站内信 + 邮件</td><td><span class="badge b-amber">中</span></td></tr>
+          <tr><td>系统异常（OCR引擎故障等）</td><td>管理员</td><td>短信 + 邮件</td><td><span class="badge b-coral">紧急</span></td></tr>
+        </tbody>
+      </table>
+
+      <h3>9.2 通知渠道与配置</h3>
+      <div class="card-grid card-grid-4" style="margin-top:12px;">
+        <div class="card">
+          <div class="card-icon">💬</div>
+          <div class="card-name">站内消息</div>
+          <div class="card-desc">系统内通知中心，支持已读/未读标记，按类型筛选，点击可跳转相关文件。</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🏢</div>
+          <div class="card-name">企微/钉钉</div>
+          <div class="card-desc">集成企业微信或钉钉机器人，实时推送关键通知，支持消息内快捷操作。</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">📧</div>
+          <div class="card-name">邮件通知</div>
+          <div class="card-desc">非实时类通知和汇总报告通过邮件发送，支持每日/每周待办摘要邮件。</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">📱</div>
+          <div class="card-name">短信通知</div>
+          <div class="card-desc">仅用于系统级紧急告警（如服务故障），确保管理员第一时间知悉。</div>
+        </div>
+      </div>
+
+      <div class="callout">
+        <strong>个性化配置：</strong>每位用户可在个人设置中选择接收哪些类型的通知、通过哪些渠道接收，避免信息过载。管理员可设定强制通知类型（如异常告警不可关闭）。
+      </div>
+    </div>
+
+    <!-- 10 数据管道 -->
+    <div class="section" id="s10">
+      <div class="section-header">
+        <div class="section-num">10</div>
+        <div>
+          <div class="section-title">数据管道设计</div>
+          <div class="section-title-en">Data Pipeline Design</div>
+        </div>
+      </div>
+      <p>文件数据经六阶段流水线处理，最终输出可供大模型使用的高质量结构化数据集：</p>
+
+      <div class="pipeline">
+        <div class="pipe-step">
+          <div class="pipe-step-num">1</div>
+          <div class="pipe-step-name">文件采集</div>
+          <div class="pipe-step-sub">上传 / 邮件 / API</div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-step-num">2</div>
+          <div class="pipe-step-name">OCR 识别</div>
+          <div class="pipe-step-sub">多语言文字提取</div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-step-num">3</div>
+          <div class="pipe-step-name">字段解析</div>
+          <div class="pipe-step-sub">NLP 结构化</div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-step-num">4</div>
+          <div class="pipe-step-name">数据清洗</div>
+          <div class="pipe-step-sub">去重 / 标准化</div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-step-num">5</div>
+          <div class="pipe-step-name">入数仓</div>
+          <div class="pipe-step-sub">结构化存储</div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-step-num">6</div>
+          <div class="pipe-step-name">模型训练</div>
+          <div class="pipe-step-sub">投喂业务大模型</div>
+        </div>
+      </div>
+
+      <h3>数据清洗规则</h3>
+      <table>
+        <thead><tr><th>清洗类型</th><th>具体规则</th><th>示例</th></tr></thead>
+        <tbody>
+          <tr><td>格式标准化</td><td>日期统一 ISO 8601，金额统一两位小数，电话/账号去除空格</td><td>2024/7/1 → 2024-07-01</td></tr>
+          <tr><td>币种换算</td><td>银行水单中外币金额按交易日汇率换算为人民币并存储双份</td><td>USD 10,000 → CNY 72,400</td></tr>
+          <tr><td>去重处理</td><td>相同单号 + 相同文件类型视为重复，保留最新版本，旧版本归入历史</td><td>—</td></tr>
+          <tr><td>HS 编码校验</td><td>校验位数（8/10位）及合法性，不合法字段标记为待核查</td><td>—</td></tr>
+          <tr><td>跨文件一致性</td><td>同订单号下发票金额 vs 报关单金额差异超 1% 自动告警</td><td>差异标记 + 推送复核</td></tr>
+          <tr><td>空值填补</td><td>必填字段为空时，从同批次关联文件中推断填补，无法填补则标记</td><td>—</td></tr>
+        </tbody>
+      </table>
+
+      <h3>数据质量目标</h3>
+      <div class="metrics">
+        <div class="metric">
+          <div class="metric-value">98.6<span style="font-size:15px">%</span></div>
+          <div class="metric-label">OCR 识别率</div>
+        </div>
+        <div class="metric">
+          <div class="metric-value">94<span style="font-size:15px">%</span></div>
+          <div class="metric-label">字段完整率</div>
+        </div>
+        <div class="metric">
+          <div class="metric-value">91<span style="font-size:15px">%</span></div>
+          <div class="metric-label">跨文件一致性</div>
+        </div>
+        <div class="metric">
+          <div class="metric-value">87<span style="font-size:15px">%</span></div>
+          <div class="metric-label">关联率目标</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 11 大模型层 -->
+    <div class="section" id="s11">
+      <div class="section-header">
+        <div class="section-num">11</div>
+        <div>
+          <div class="section-title">业务大模型层</div>
+          <div class="section-title-en">Business LLM Layer</div>
+        </div>
+      </div>
+      <p>清洗后的结构化数据持续投喂企业私有业务大模型，逐步构建外贸领域专属 AI 能力：</p>
+
+      <div class="card-grid card-grid-2">
+        <div class="card">
+          <div class="card-icon">💬</div>
+          <div class="card-name">智能文件问答</div>
+          <div class="card-desc">自然语言查询任意订单、金额、客户、HS编码等信息。例如："2024年上半年美国客户总出口金额是多少？"</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🔔</div>
+          <div class="card-name">跨文件异常检测</div>
+          <div class="card-desc">自动比对发票 vs 报关单金额、箱单 vs 提单数量，发现不一致自动告警，支持批量扫描历史文件。</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">📊</div>
+          <div class="card-name">业务趋势分析</div>
+          <div class="card-desc">按客户、商品、月份、目的国自动生成进出口趋势报告，识别高价值客户和高利润品类。</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🔁</div>
+          <div class="card-name">模型持续迭代</div>
+          <div class="card-desc">新文件数据经清洗后定期（每周/每月）追加投喂，大模型对外贸合规、HS归类、汇率风险等理解持续提升。</div>
+        </div>
+      </div>
+
+      <div class="callout amber" style="margin-top:20px;">
+        <strong>数据安全说明：</strong>业务大模型部署于企业私有环境（私有云或本地服务器），所有文件数据不出境、不上传第三方平台，满足数据合规要求。
+      </div>
+
+      <h3>模型训练数据格式规范（示例）</h3>
+      <table>
+        <thead><tr><th>字段</th><th>类型</th><th>示例值</th><th>来源文件</th></tr></thead>
+        <tbody>
+          <tr><td>doc_id</td><td>String</td><td>D240701-0045</td><td>报关单</td></tr>
+          <tr><td>doc_type</td><td>Enum</td><td>customs_declaration</td><td>系统标注</td></tr>
+          <tr><td>order_id</td><td>String</td><td>SO-8820</td><td>关联映射</td></tr>
+          <tr><td>trade_amount_usd</td><td>Decimal</td><td>48200.00</td><td>报关单 / 发票</td></tr>
+          <tr><td>hs_code</td><td>String</td><td>8542310001</td><td>报关单</td></tr>
+          <tr><td>destination_country</td><td>String</td><td>US</td><td>报关单</td></tr>
+          <tr><td>trade_date</td><td>Date</td><td>2024-07-01</td><td>报关单</td></tr>
+          <tr><td>customer_name</td><td>String</td><td>ABC Trading Co.</td><td>发票 / 合同</td></tr>
+          <tr><td>data_quality_score</td><td>Float</td><td>0.97</td><td>系统计算</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 12 非功能性需求 & 扩展 -->
+    <div class="section" id="s12">
+      <div class="section-header">
+        <div class="section-num">12</div>
+        <div>
+          <div class="section-title">非功能性需求 &amp; 扩展规划</div>
+          <div class="section-title-en">Non-functional Requirements &amp; Roadmap</div>
+        </div>
+      </div>
+
+      <h3>12.1 性能与可靠性指标</h3>
+      <table>
+        <thead><tr><th>指标</th><th>目标值</th></tr></thead>
+        <tbody>
+          <tr><td>文件上传响应时间</td><td>&lt; 2 秒（50MB 以内）</td></tr>
+          <tr><td>OCR 处理时间</td><td>普通单页文件 &lt; 5 秒</td></tr>
+          <tr><td>全文检索响应</td><td>&lt; 1 秒</td></tr>
+          <tr><td>系统可用性</td><td>99.5% SLA</td></tr>
+          <tr><td>数据备份频率</td><td>每日增量 + 每周全量</td></tr>
+          <tr><td>文件存储容量</td><td>初期 5TB，按需扩展</td></tr>
+          <tr><td>并发用户数</td><td>支持 200 用户同时在线，50 用户同时上传</td></tr>
+          <tr><td>RPO（恢复点目标）</td><td>&lt; 1 小时</td></tr>
+          <tr><td>RTO（恢复时间目标）</td><td>&lt; 4 小时</td></tr>
+        </tbody>
+      </table>
+
+      <h3>12.2 数据安全与合规</h3>
+      <table>
+        <thead><tr><th>安全措施</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>传输加密</td><td>全站 HTTPS / TLS 1.3，API 接口强制 TLS</td></tr>
+          <tr><td>存储加密</td><td>文件存储采用 AES-256 加密，密钥由 KMS 管理</td></tr>
+          <tr><td>文件水印</td><td>在线预览和导出 PDF 时自动叠加用户名+时间水印，防止截屏外泄</td></tr>
+          <tr><td>下载权限</td><td>原件下载需具备对应角色权限，可按文件类型单独管控</td></tr>
+          <tr><td>登录安全</td><td>支持企业 SSO（LDAP/SAML）、双因素认证（短信/OTP），登录失败锁定策略</td></tr>
+          <tr><td>异地容灾</td><td>核心数据异地备份（同城双活或异地冷备），确保灾难场景可恢复</td></tr>
+          <tr><td>数据不出境</td><td>所有文件和模型数据存储于境内服务器，满足数据出境合规要求</td></tr>
+        </tbody>
+      </table>
+
+      <h3>12.3 技术架构（PHP + Python 双语言）</h3>
+      <div class="callout">
+        <strong>架构原则：</strong>PHP 负责业务逻辑层（用户交互、权限、审批、文件管理），Python 负责数据与 AI 层（OCR、NLP、数据清洗、模型训练与推理）。两者通过 HTTP API + Redis 队列通信，共享 MySQL 数据库。部署于公司内部服务器。
+      </div>
+
+      <table>
+        <thead><tr><th>层级</th><th>组件</th><th>技术选型</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td rowspan="4" style="font-weight:600;color:var(--blue-600)">业务层（PHP）</td><td>Web 框架</td><td>Laravel 10+（PHP 8.1+）</td><td>路由、ORM、队列、通知、权限一体化</td></tr>
+          <tr><td>前端框架</td><td>Vue 3 + Element Plus</td><td>SPA 单页应用，表格/表单/弹窗组件丰富</td></tr>
+          <tr><td>权限管理</td><td>Spatie Laravel-Permission</td><td>RBAC 角色权限开箱即用</td></tr>
+          <tr><td>文件预览</td><td>PDF.js + LibreOffice（转换）</td><td>Word/Excel 转 PDF 后前端预览</td></tr>
+          <tr><td rowspan="4" style="font-weight:600;color:var(--teal-600)">数据与AI层（Python）</td><td>API 框架</td><td>FastAPI</td><td>提供 OCR / NLP / 模型推理 HTTP 接口</td></tr>
+          <tr><td>OCR 引擎</td><td>PaddleOCR（本地部署）</td><td>免费开源，支持中英文，识别率高</td></tr>
+          <tr><td>NLP / 数据处理</td><td>Pandas + HanLP / LAC</td><td>字段结构化提取、数据清洗标准化</td></tr>
+          <tr><td>大模型（三期）</td><td>DeepSeek / ChatGLM（私有部署）</td><td>LLaMA-Factory 微调，vLLM 推理</td></tr>
+          <tr><td rowspan="4" style="font-weight:600;color:var(--amber-600)">基础设施层</td><td>数据库</td><td>MySQL 8.0</td><td>主业务数据、结构化字段、日志审计</td></tr>
+          <tr><td>缓存 / 队列</td><td>Redis 7</td><td>会话缓存 + Laravel 队列 + Python 任务消费</td></tr>
+          <tr><td>文件存储</td><td>服务器本地磁盘</td><td>按 年/月/文件类型/ 分目录，内部使用无需 OSS</td></tr>
+          <tr><td>Web 服务器</td><td>Nginx + PHP-FPM + Supervisor</td><td>Supervisor 守护 Laravel Worker 和 Python FastAPI</td></tr>
+        </tbody>
+      </table>
+
+      <h3>12.4 服务器部署方案</h3>
+      <div class="card-grid card-grid-2" style="margin-top:12px;">
+        <div class="card" style="border-color:var(--blue-200);">
+          <div class="card-name">方案A：单服务器（初期推荐）</div>
+          <div class="card-desc" style="line-height:1.8;">
+            CPU: 8 核 / 内存: 16 GB / 硬盘: 1TB SSD<br>
+            一台跑全部服务：Nginx + PHP + Python + MySQL + Redis<br>
+            适用场景：日均上传 &lt; 200 份文件，50 人以内使用
+          </div>
+        </div>
+        <div class="card" style="border-color:var(--teal-200);border-color:#85D4B8;">
+          <div class="card-name">方案B：双服务器（业务量增长后）</div>
+          <div class="card-desc" style="line-height:1.8;">
+            业务机：4核 8GB — PHP + MySQL + Redis + Nginx<br>
+            AI 机：8核 16GB+GPU — Python + PaddleOCR + 大模型<br>
+            适用场景：日均上传 &gt; 200 份 或接入大模型推理
+          </div>
+        </div>
+      </div>
+
+      <h3>12.4 后续扩展方向（Roadmap）</h3>
+      <div class="card-grid card-grid-2">
+        <div class="card">
+          <div class="card-name">🛡️ 合规风控模块</div>
+          <div class="card-desc">自动校验 HS 编码合法性、贸易管制清单比对、出口许可证自动预警。</div>
+        </div>
+        <div class="card">
+          <div class="card-name">🌐 多公司账套</div>
+          <div class="card-desc">支持集团多子公司独立数据空间，总部可跨公司合并分析。</div>
+        </div>
+        <div class="card">
+          <div class="card-name">🔗 ERP / 海关系统对接</div>
+          <div class="card-desc">与 SAP、金蝶、用友及海关总署申报系统 API 打通，数据双向同步。</div>
+        </div>
+        <div class="card">
+          <div class="card-name">💰 汇率风控建议</div>
+          <div class="card-desc">基于历史水单数据和市场汇率，自动识别汇率敞口并给出对冲建议。</div>
+        </div>
+        <div class="card">
+          <div class="card-name">🤝 客户信用评分</div>
+          <div class="card-desc">基于历史交易数据训练客户付款行为模型，输出信用评分辅助授信决策。</div>
+        </div>
+        <div class="card">
+          <div class="card-name">📱 移动端 App</div>
+          <div class="card-desc">手机端拍照上传单据，随时查询文件状态和业务数据，支持审批流。</div>
+        </div>
+      </div>
+
+      <div class="callout green" style="margin-top:24px;">
+        <strong>建议实施路径：</strong>第一阶段（0-3月）上线文件采集、OCR提取、基础检索、角色权限、审批流；第二阶段（3-6月）完成数据管道、数仓建设、通知系统、审计日志；第三阶段（6-12月）接入业务大模型、BI报表、ERP对接，形成数据飞轮。
+      </div>
+    </div>
+
+  </div><!-- /body -->
+
+  <!-- Footer -->
+  <div class="doc-footer">
+    <div class="footer-brand">外贸文件智能管理系统 · TradeDoc Intelligence Platform</div>
+    <div class="footer-meta">PRD v1.0 · 内部文档 · 如有疑问请联系产品团队</div>
+  </div>
+
+</div><!-- /page-wrap -->
+</body>
+</html>

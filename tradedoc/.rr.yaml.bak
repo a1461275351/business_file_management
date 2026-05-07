@@ -1,0 +1,31 @@
+version: "3"
+
+server:
+  command: "D:\\phpstudy_pro\\Extensions\\php\\php8.5.0nts\\php.exe vendor\\laravel\\octane\\bin\\roadrunner-worker"
+  relay: pipes
+  env:
+    - APP_BASE_PATH: "D:\\work\\product\\business_file_management\\tradedoc"
+
+http:
+  address: "0.0.0.0:8090"
+  middleware:
+    - static
+  static:
+    dir: "public"
+    forbid:
+      - ".php"
+  pool:
+    num_workers: 2
+    max_jobs: 500
+    allocate_timeout: 60s
+    destroy_timeout: 60s
+    supervisor:
+      max_worker_memory: 256
+      ttl: 3600s
+      idle_ttl: 600s
+      exec_ttl: 60s
+
+logs:
+  mode: development
+  level: info
+  output: stdout

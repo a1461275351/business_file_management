@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>数据库设计文档 — 外贸文件智能管理系统</title>
+<style>
+  :root {
+    --blue: #185FA5; --blue-bg: #E6F1FB;
+    --teal: #0F6E56; --teal-bg: #E1F5EE;
+    --amber: #854F0B; --amber-bg: #FAEEDA;
+    --coral: #993C1D; --coral-bg: #FAECE7;
+    --green: #3B6D11; --green-bg: #EAF3DE;
+    --gray: #5F5E5A; --gray-bg: #F1EFE8;
+    --border: #e2e0d8; --bg: #ffffff; --bg2: #f8f7f4;
+    --text: #1a1a18; --text2: #5F5E5A; --text3: #888780;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; font-size: 14px; line-height: 1.7; color: var(--text); background: #f4f3ef; }
+  .wrap { max-width: 1000px; margin: 0 auto; background: var(--bg); min-height: 100vh; box-shadow: 0 0 40px rgba(0,0,0,0.06); }
+  .cover { background: #0C447C; padding: 48px 56px 40px; color: #fff; }
+  .cover h1 { font-size: 28px; font-weight: 600; margin-bottom: 8px; }
+  .cover p { font-size: 14px; color: rgba(255,255,255,0.6); }
+  .cover-meta { display: flex; gap: 24px; margin-top: 20px; font-size: 12px; color: rgba(255,255,255,0.45); border-top: 1px solid rgba(255,255,255,0.1); padding-top: 16px; }
+  .cover-meta strong { color: rgba(255,255,255,0.8); display: block; margin-bottom: 2px; }
+  .body { padding: 0 56px 56px; }
+  .section { margin-top: 40px; }
+  .section-head { display: flex; align-items: center; gap: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
+  .section-num { width: 28px; height: 28px; border-radius: 6px; background: #0C447C; color: #fff; font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .section-title { font-size: 18px; font-weight: 600; }
+  h3 { font-size: 14px; font-weight: 600; margin: 20px 0 10px; color: var(--text); }
+  p { color: var(--text2); margin-bottom: 10px; }
+  .badge { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 10px; font-weight: 500; }
+  .b-blue { background: var(--blue-bg); color: var(--blue); }
+  .b-teal { background: var(--teal-bg); color: var(--teal); }
+  .b-amber { background: var(--amber-bg); color: var(--amber); }
+  .b-coral { background: var(--coral-bg); color: var(--coral); }
+  .b-green { background: var(--green-bg); color: var(--green); }
+  .b-gray { background: var(--gray-bg); color: var(--gray); }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 12px 0; }
+  th { font-size: 11px; font-weight: 500; color: var(--text3); text-align: left; padding: 8px 10px; background: var(--bg2); border: 1px solid var(--border); }
+  td { padding: 8px 10px; border: 1px solid var(--border); color: var(--text2); vertical-align: top; }
+  tr:hover td { background: var(--bg2); }
+  .callout { border-left: 3px solid #378ADD; background: var(--blue-bg); padding: 12px 16px; border-radius: 0 8px 8px 0; margin: 16px 0; font-size: 13px; color: #0C447C; }
+  .er-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0; }
+  .er-card { border: 1px solid var(--border); border-radius: 8px; padding: 14px; }
+  .er-card-title { font-size: 13px; font-weight: 600; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+  .er-card-desc { font-size: 12px; color: var(--text2); line-height: 1.6; }
+  .er-rel { font-size: 12px; color: var(--text3); margin-top: 6px; line-height: 1.6; }
+  .er-rel code { background: var(--bg2); padding: 1px 4px; border-radius: 3px; font-size: 11px; color: var(--text); }
+  .stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin: 16px 0; }
+  .stat { background: var(--bg2); border-radius: 8px; padding: 14px; text-align: center; }
+  .stat-val { font-size: 24px; font-weight: 600; color: var(--text); }
+  .stat-label { font-size: 11px; color: var(--text3); margin-top: 2px; }
+  .mermaid-like { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 24px; margin: 16px 0; font-size: 13px; line-height: 2; font-family: 'Courier New', monospace; overflow-x: auto; }
+  .mermaid-like .tbl { color: var(--blue); font-weight: 600; }
+  .mermaid-like .rel { color: var(--coral); }
+  .mermaid-like .desc { color: var(--text3); }
+  @media print { .wrap { box-shadow: none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="cover">
+  <h1>数据库设计文档</h1>
+  <p>外贸文件智能管理系统 — TradeDoc Intelligence Platform</p>
+  <div class="cover-meta">
+    <div><strong>数据库</strong>MySQL 8.0</div>
+    <div><strong>字符集</strong>utf8mb4_unicode_ci</div>
+    <div><strong>版本</strong>v1.0</div>
+    <div><strong>更新日期</strong>2024-07</div>
+  </div>
+</div>
+
+<div class="body">
+
+  <!-- 概览 -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-num">1</div>
+      <div class="section-title">数据库概览</div>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="stat-val">25</div><div class="stat-label">数据表</div></div>
+      <div class="stat"><div class="stat-val">11</div><div class="stat-label">业务模块</div></div>
+      <div class="stat"><div class="stat-val">9</div><div class="stat-label">文件类型</div></div>
+      <div class="stat"><div class="stat-val">6</div><div class="stat-label">用户角色</div></div>
+    </div>
+
+    <h3>模块划分</h3>
+    <table>
+      <thead><tr><th>模块</th><th>包含表</th><th>数量</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td><span class="badge b-blue">用户与权限</span></td><td>departments, users, roles, permissions, role_permissions, user_roles, user_customers</td><td>7</td><td>RBAC 权限模型 + 数据隔离</td></tr>
+        <tr><td><span class="badge b-teal">客户管理</span></td><td>customers</td><td>1</td><td>客户/供应商统一管理</td></tr>
+        <tr><td><span class="badge b-green">订单管理</span></td><td>orders</td><td>1</td><td>业务主线，文件关联的锚点</td></tr>
+        <tr><td><span class="badge b-coral">文件管理</span></td><td>document_types, documents, document_versions, document_relations, document_tags</td><td>5</td><td>核心模块，文件全生命周期</td></tr>
+        <tr><td><span class="badge b-amber">字段提取</span></td><td>field_templates, document_fields</td><td>2</td><td>OCR/NLP 提取结果存储</td></tr>
+        <tr><td><span class="badge b-gray">OCR 任务</span></td><td>ocr_tasks</td><td>1</td><td>异步任务队列</td></tr>
+        <tr><td><span class="badge b-blue">审批工作流</span></td><td>approval_rules, approval_records, approval_details, review_tasks</td><td>4</td><td>多级审批 + 核对分配</td></tr>
+        <tr><td><span class="badge b-teal">通知消息</span></td><td>notifications, notification_settings</td><td>2</td><td>多渠道消息推送</td></tr>
+        <tr><td><span class="badge b-amber">审计日志</span></td><td>operation_logs, field_change_logs</td><td>2</td><td>操作追踪与合规审计</td></tr>
+        <tr><td><span class="badge b-coral">数据管道</span></td><td>pipeline_logs, anomaly_alerts</td><td>2</td><td>处理链路追踪与异常告警</td></tr>
+        <tr><td><span class="badge b-gray">系统配置</span></td><td>system_configs, email_configs</td><td>2</td><td>全局参数与邮箱采集</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ER 关系 -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-num">2</div>
+      <div class="section-title">核心 ER 关系图（文本描述）</div>
+    </div>
+
+    <div class="callout">
+      以下用文本形式描述表间关系。<code>1:N</code> = 一对多，<code>M:N</code> = 多对多，<code>1:1</code> = 一对一。箭头方向为外键指向。
+    </div>
+
+    <div class="mermaid-like">
+<span class="desc">── 用户与权限 ──</span>
+<span class="tbl">users</span> <span class="rel">N:1</span> <span class="tbl">departments</span> <span class="desc">(用户属于部门)</span>
+<span class="tbl">users</span> <span class="rel">M:N</span> <span class="tbl">roles</span> <span class="desc">(通过 user_roles 关联)</span>
+<span class="tbl">roles</span> <span class="rel">M:N</span> <span class="tbl">permissions</span> <span class="desc">(通过 role_permissions 关联)</span>
+<span class="tbl">users</span> <span class="rel">M:N</span> <span class="tbl">customers</span> <span class="desc">(通过 user_customers 关联，业务员负责的客户)</span>
+
+<span class="desc">── 文件核心链路 ──</span>
+<span class="tbl">documents</span> <span class="rel">N:1</span> <span class="tbl">document_types</span> <span class="desc">(每个文件有一个类型)</span>
+<span class="tbl">documents</span> <span class="rel">N:1</span> <span class="tbl">orders</span> <span class="desc">(文件关联到订单)</span>
+<span class="tbl">documents</span> <span class="rel">N:1</span> <span class="tbl">customers</span> <span class="desc">(文件关联到客户)</span>
+<span class="tbl">documents</span> <span class="rel">N:1</span> <span class="tbl">users</span> <span class="desc">(uploaded_by 上传人)</span>
+<span class="tbl">orders</span> <span class="rel">N:1</span> <span class="tbl">customers</span> <span class="desc">(订单属于客户)</span>
+<span class="tbl">orders</span> <span class="rel">N:1</span> <span class="tbl">users</span> <span class="desc">(assigned_to 负责业务员)</span>
+
+<span class="desc">── 文件扩展 ──</span>
+<span class="tbl">document_versions</span> <span class="rel">N:1</span> <span class="tbl">documents</span> <span class="desc">(文件的多个版本)</span>
+<span class="tbl">document_relations</span> <span class="rel">N:N</span> <span class="tbl">documents</span> <span class="desc">(同一票货文件互相关联)</span>
+<span class="tbl">document_tags</span> <span class="rel">N:1</span> <span class="tbl">documents</span> <span class="desc">(文件的多个标签)</span>
+
+<span class="desc">── 字段提取 ──</span>
+<span class="tbl">field_templates</span> <span class="rel">N:1</span> <span class="tbl">document_types</span> <span class="desc">(每个文件类型有多个字段模板)</span>
+<span class="tbl">document_fields</span> <span class="rel">N:1</span> <span class="tbl">documents</span> <span class="desc">(每个文件有多个提取字段)</span>
+<span class="tbl">document_fields</span> <span class="rel">N:1</span> <span class="tbl">field_templates</span> <span class="desc">(字段值对应模板定义)</span>
+
+<span class="desc">── 审批与核对 ──</span>
+<span class="tbl">approval_records</span> <span class="rel">N:1</span> <span class="tbl">documents</span> <span class="desc">(文件的审批记录)</span>
+<span class="tbl">approval_details</span> <span class="rel">N:1</span> <span class="tbl">approval_records</span> <span class="desc">(每条审批的多级明细)</span>
+<span class="tbl">review_tasks</span> <span class="rel">N:1</span> <span class="tbl">documents</span> <span class="desc">(文件的核对任务)</span>
+
+<span class="desc">── 任务与管道 ──</span>
+<span class="tbl">ocr_tasks</span> <span class="rel">N:1</span> <span class="tbl">documents</span> <span class="desc">(文件的 OCR 处理任务)</span>
+<span class="tbl">pipeline_logs</span> <span class="rel">N:1</span> <span class="tbl">documents</span> <span class="desc">(文件的管道处理日志)</span>
+<span class="tbl">anomaly_alerts</span> <span class="rel">N:1</span> <span class="tbl">documents</span> <span class="desc">(文件相关的异常告警)</span>
+
+<span class="desc">── 通知与日志 ──</span>
+<span class="tbl">notifications</span> <span class="rel">N:1</span> <span class="tbl">users</span> <span class="desc">(通知发给用户)</span>
+<span class="tbl">operation_logs</span> <span class="rel">N:1</span> <span class="tbl">users</span> <span class="desc">(操作日志关联操作人)</span>
+<span class="tbl">field_change_logs</span> <span class="rel">N:1</span> <span class="tbl">documents</span> <span class="desc">(字段修改历史关联文件)</span>
+    </div>
+  </div>
+
+  <!-- 核心表详解 -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-num">3</div>
+      <div class="section-title">核心表详解</div>
+    </div>
+
+    <h3>3.1 documents（文件主表）— 系统核心</h3>
+    <p>所有业务围绕此表展开，是文件管理、OCR提取、审批流、审计日志的中心节点。</p>
+    <div class="er-grid">
+      <div class="er-card">
+        <div class="er-card-title"><span class="badge b-blue">关联关系</span></div>
+        <div class="er-rel">
+          <code>document_type_id</code> → document_types.id<br>
+          <code>order_id</code> → orders.id<br>
+          <code>customer_id</code> → customers.id<br>
+          <code>uploaded_by</code> → users.id<br>
+          <code>reviewed_by</code> → users.id<br>
+          <code>approved_by</code> → users.id
+        </div>
+      </div>
+      <div class="er-card">
+        <div class="er-card-title"><span class="badge b-coral">状态流转</span></div>
+        <div class="er-card-desc">
+          draft（草稿）<br>
+          → ocr_processing（OCR处理中）<br>
+          → pending_review（待核对）<br>
+          → pending_approval（待审核）<br>
+          → approved（审核通过）→ archived（已归档）<br>
+          → voided（已作废，任意状态可触发）
+        </div>
+      </div>
+    </div>
+    <div class="callout">
+      <strong>设计要点：</strong>采用软删除（deleted_at），文件不会物理删除。file_hash 用于去重检测。FULLTEXT 索引支持文件编号和标题的模糊搜索。
+    </div>
+
+    <h3>3.2 document_fields（字段提取值表）— 数据资产核心</h3>
+    <p>存储 OCR/NLP 从每个文件中提取的结构化字段值，是未来大模型训练数据的源头。</p>
+    <div class="er-grid">
+      <div class="er-card">
+        <div class="er-card-title"><span class="badge b-teal">字段元信息</span></div>
+        <div class="er-card-desc">
+          <code>field_key</code> — 冗余字段标识，避免每次 JOIN 模板表<br>
+          <code>confidence</code> — OCR 置信度，低于阈值自动进入核对队列<br>
+          <code>bbox_info</code> — JSON 存储 OCR 定位坐标，用于前端高亮标注<br>
+          <code>extract_method</code> — 区分自动提取/人工录入/推断填补
+        </div>
+      </div>
+      <div class="er-card">
+        <div class="er-card-title"><span class="badge b-amber">数据流</span></div>
+        <div class="er-card-desc">
+          1. Python OCR 提取后写入此表<br>
+          2. 低置信度字段生成 review_task<br>
+          3. 人工核对后更新 is_confirmed<br>
+          4. 字段修改记录写入 field_change_logs<br>
+          5. 清洗后的数据供大模型训练使用
+        </div>
+      </div>
+    </div>
+
+    <h3>3.3 field_templates（字段模板表）— 可配置化基础</h3>
+    <p>每种文件类型对应一组字段模板，管理员可在系统设置中自定义字段，无需改代码。</p>
+    <table>
+      <thead><tr><th>关键字段</th><th>作用</th><th>示例值</th></tr></thead>
+      <tbody>
+        <tr><td>field_key</td><td>字段唯一标识，代码中引用</td><td>declaration_no, trade_amount</td></tr>
+        <tr><td>field_type</td><td>字段数据类型，控制校验和展示</td><td>string / decimal / date / enum</td></tr>
+        <tr><td>is_required</td><td>是否必填，空值时标记为待核对</td><td>1（必填）/ 0（可选）</td></tr>
+        <tr><td>extract_rule</td><td>OCR 提取规则（正则或位置模板）</td><td>^\d{18}$（报关单号格式）</td></tr>
+        <tr><td>validation_rule</td><td>入库校验规则</td><td>digits:8,10（HS编码位数）</td></tr>
+        <tr><td>enum_options</td><td>枚举字段的可选值（JSON）</td><td>["一般贸易","加工贸易","保税"]</td></tr>
+      </tbody>
+    </table>
+
+    <h3>3.4 orders（订单表）— 业务关联锚点</h3>
+    <p>订单是串联所有文件的主线。一个订单（如 SO-8820）可关联报关单、发票、箱单、提单等多个文件，实现"一票货全套单据"的管理。</p>
+
+    <h3>3.5 approval_records + approval_details — 多级审批</h3>
+    <p>两表协作实现可配置的多级审批：</p>
+    <div class="er-grid">
+      <div class="er-card">
+        <div class="er-card-title">approval_records</div>
+        <div class="er-card-desc">记录一次完整的审批流程（谁提交、当前第几级、最终结果）</div>
+      </div>
+      <div class="er-card">
+        <div class="er-card-title">approval_details</div>
+        <div class="er-card-desc">记录每一级审批人的具体动作（通过/驳回、审批意见、操作时间）</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 数据流 -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-num">4</div>
+      <div class="section-title">核心数据流</div>
+    </div>
+
+    <h3>4.1 文件上传 → OCR → 归档 全流程</h3>
+    <div class="mermaid-like">
+1. 用户上传文件
+   → 写入 <span class="tbl">documents</span> (status=draft)
+   → 文件存储到磁盘 (storage_path)
+   → 写入 <span class="tbl">document_versions</span> (version=1)
+
+2. 提交 OCR
+   → <span class="tbl">documents</span>.status → ocr_processing
+   → 创建 <span class="tbl">ocr_tasks</span> (status=pending)
+   → Redis 队列通知 Python Worker
+
+3. Python OCR 处理
+   → 更新 <span class="tbl">ocr_tasks</span>.status → processing → completed
+   → 按 <span class="tbl">field_templates</span> 提取字段
+   → 写入 <span class="tbl">document_fields</span> (含 confidence)
+   → 写入 <span class="tbl">pipeline_logs</span> (stage=ocr)
+
+4. 判断是否需要人工核对
+   → 若存在 confidence &lt; 阈值的字段:
+     → <span class="tbl">documents</span>.status → pending_review
+     → 创建 <span class="tbl">review_tasks</span>
+     → 创建 <span class="tbl">notifications</span> (通知单证员)
+   → 若全部字段置信度达标:
+     → 直接进入步骤 5
+
+5. 人工核对完成
+   → 更新 <span class="tbl">document_fields</span>.is_confirmed = 1
+   → 写入 <span class="tbl">field_change_logs</span> (如有修改)
+   → <span class="tbl">documents</span>.status → pending_approval
+
+6. 审批流
+   → 创建 <span class="tbl">approval_records</span>
+   → 创建 <span class="tbl">notifications</span> (通知审批人)
+   → 审批人操作 → 写入 <span class="tbl">approval_details</span>
+   → 通过: <span class="tbl">documents</span>.status → archived
+   → 驳回: <span class="tbl">documents</span>.status → pending_review
+
+7. 跨文件校验 (异步)
+   → 比对同 order_id 下的文件字段
+   → 发现异常 → 写入 <span class="tbl">anomaly_alerts</span>
+   → 创建 <span class="tbl">notifications</span> (通知相关人员)
+    </div>
+
+    <h3>4.2 数据隔离查询逻辑</h3>
+    <table>
+      <thead><tr><th>角色</th><th>查询 documents 时的过滤条件</th></tr></thead>
+      <tbody>
+        <tr><td>超级管理员</td><td>无过滤，查看全部</td></tr>
+        <tr><td>业务主管</td><td><code>WHERE uploaded_by IN (SELECT id FROM users WHERE department_id = ?)</code></td></tr>
+        <tr><td>业务员</td><td><code>WHERE customer_id IN (SELECT customer_id FROM user_customers WHERE user_id = ?)</code></td></tr>
+        <tr><td>单证员</td><td>同业务主管（部门级）</td></tr>
+        <tr><td>财务</td><td><code>WHERE document_type_id IN (银行水单, 商业发票)</code></td></tr>
+        <tr><td>只读访客</td><td>按临时授权的文件 ID 列表过滤</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 索引与性能 -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-num">5</div>
+      <div class="section-title">索引设计与性能考量</div>
+    </div>
+
+    <h3>5.1 关键索引说明</h3>
+    <table>
+      <thead><tr><th>表</th><th>索引</th><th>用途</th></tr></thead>
+      <tbody>
+        <tr><td>documents</td><td>FULLTEXT (doc_no, title, original_filename)</td><td>文件搜索框的模糊搜索</td></tr>
+        <tr><td>documents</td><td>idx_status + idx_trade_date + idx_created_at</td><td>文件列表筛选排序</td></tr>
+        <tr><td>documents</td><td>idx_hash (file_hash)</td><td>上传去重检测</td></tr>
+        <tr><td>document_fields</td><td>idx_document + idx_confidence</td><td>按文件查字段 + 低置信度筛选</td></tr>
+        <tr><td>ocr_tasks</td><td>idx_status_priority</td><td>Worker 拉取待处理任务（按优先级）</td></tr>
+        <tr><td>operation_logs</td><td>idx_created_at + idx_target</td><td>审计日志按时间范围查询</td></tr>
+        <tr><td>notifications</td><td>idx_user_read</td><td>用户未读通知列表</td></tr>
+        <tr><td>customers</td><td>FULLTEXT (company_name, company_name_en, short_name)</td><td>客户名搜索</td></tr>
+      </tbody>
+    </table>
+
+    <h3>5.2 大表预估与分区建议</h3>
+    <table>
+      <thead><tr><th>表</th><th>预估年增长</th><th>建议</th></tr></thead>
+      <tbody>
+        <tr><td>documents</td><td>~5,000-20,000 行/年</td><td>初期无需分区，百万级以内 MySQL 单表无压力</td></tr>
+        <tr><td>document_fields</td><td>~50,000-200,000 行/年</td><td>使用 bigint 主键，预留增长空间</td></tr>
+        <tr><td>operation_logs</td><td>~100,000-500,000 行/年</td><td>超过 500 万行后可按月分区，旧数据归档</td></tr>
+        <tr><td>pipeline_logs</td><td>~50,000-200,000 行/年</td><td>同上，保留 1 年后归档</td></tr>
+        <tr><td>notifications</td><td>~100,000+ 行/年</td><td>已读超 90 天的可定期清理</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      <strong>内部系统性能建议：</strong>50 人以内使用，年文件量万级，MySQL 单库单表完全胜任，不需要分库分表。重点关注：1) 文件存储磁盘空间定期监控；2) operation_logs 表定期归档；3) Redis 内存不超限。
+    </div>
+  </div>
+
+  <!-- 文件存储 -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-num">6</div>
+      <div class="section-title">文件存储目录规范</div>
+    </div>
+    <div class="mermaid-like">
+/data/tradedoc/files/
+  ├── 2024/
+  │   ├── 07/
+  │   │   ├── customs_declaration/    <span class="desc">报关单</span>
+  │   │   │   ├── D240701-0045_v1.pdf
+  │   │   │   └── D240701-0045_v2.pdf <span class="desc">(修订版本)</span>
+  │   │   ├── commercial_invoice/     <span class="desc">商业发票</span>
+  │   │   ├── packing_list/           <span class="desc">装箱单</span>
+  │   │   ├── bank_receipt/           <span class="desc">银行水单</span>
+  │   │   ├── bill_of_lading/         <span class="desc">提单</span>
+  │   │   └── ...
+  │   └── 08/
+  └── 2025/
+
+<span class="desc">命名规则: {doc_no}_v{version}.{ext}</span>
+<span class="desc">文件路径存入 documents.storage_path 和 document_versions.storage_path</span>
+    </div>
+  </div>
+
+</div>
+</div>
+</body>
+</html>
