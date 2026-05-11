@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>贸易云档 TradeDoc - 员工培训手册</title>
+<style>
+  :root {
+    --primary: #1e6fd9;
+    --primary-light: #e8f0fe;
+    --primary-dark: #0d4ba8;
+    --success: #52c41a;
+    --warning: #faad14;
+    --danger: #f5222d;
+    --text: #1f2937;
+    --text-light: #6b7280;
+    --border: #e5e7eb;
+    --bg: #ffffff;
+    --bg-alt: #f9fafb;
+    --code-bg: #f3f4f6;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+                 "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    line-height: 1.7;
+    color: var(--text);
+    margin: 0;
+    padding: 0;
+    background: var(--bg-alt);
+  }
+  .layout {
+    display: flex;
+    max-width: 1400px;
+    margin: 0 auto;
+    background: var(--bg);
+    box-shadow: 0 0 30px rgba(0,0,0,0.05);
+  }
+  .sidebar {
+    width: 280px;
+    background: #f7f9fc;
+    border-right: 1px solid var(--border);
+    padding: 24px 0;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    flex-shrink: 0;
+  }
+  .sidebar h3 {
+    margin: 0 0 16px;
+    padding: 0 24px 12px;
+    font-size: 16px;
+    color: var(--primary);
+    border-bottom: 2px solid var(--primary-light);
+  }
+  .sidebar ul { list-style: none; padding: 0; margin: 0; }
+  .sidebar li a {
+    display: block;
+    padding: 8px 24px;
+    color: var(--text);
+    text-decoration: none;
+    font-size: 14px;
+    border-left: 3px solid transparent;
+    transition: all 0.2s;
+  }
+  .sidebar li a:hover {
+    background: var(--primary-light);
+    border-left-color: var(--primary);
+    color: var(--primary-dark);
+  }
+  .sidebar li.sub a {
+    padding-left: 40px;
+    font-size: 13px;
+    color: var(--text-light);
+  }
+  .sidebar li.chapter a {
+    font-weight: 600;
+    color: var(--primary-dark);
+    margin-top: 8px;
+  }
+  .content {
+    flex: 1;
+    padding: 40px 56px;
+    min-width: 0;
+  }
+  .header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 36px 0;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(30, 111, 217, 0.2);
+  }
+  .header h1 { margin: 0 0 8px; font-size: 32px; font-weight: 700; }
+  .header p { margin: 0; opacity: 0.95; font-size: 16px; }
+  .header .meta { margin-top: 16px; font-size: 13px; opacity: 0.85; }
+  h2 {
+    margin: 56px 0 18px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--primary);
+    color: var(--primary-dark);
+    font-size: 24px;
+    scroll-margin-top: 20px;
+  }
+  h3 {
+    margin: 36px 0 14px;
+    color: var(--text);
+    font-size: 18px;
+    scroll-margin-top: 20px;
+    border-left: 4px solid var(--primary);
+    padding-left: 12px;
+  }
+  h4 { margin: 22px 0 10px; font-size: 15px; color: var(--primary-dark); }
+  p { margin: 8px 0 14px; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 14px;
+    background: white;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  th {
+    background: var(--primary);
+    color: white;
+    text-align: left;
+    padding: 10px 14px;
+    font-weight: 600;
+  }
+  td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  tr:hover { background: var(--bg-alt); }
+  tr:last-child td { border-bottom: none; }
+  code {
+    font-family: "Consolas", "Monaco", "Courier New", monospace;
+    background: var(--code-bg);
+    padding: 2px 6px;
+    border-radius: 3px;
+    color: #c7254e;
+    font-size: 13px;
+  }
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 16px 20px;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: "Consolas", monospace;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  pre code { background: transparent; color: inherit; padding: 0; }
+  blockquote {
+    border-left: 4px solid var(--primary);
+    background: var(--primary-light);
+    margin: 16px 0;
+    padding: 12px 20px;
+    color: var(--text);
+    border-radius: 0 6px 6px 0;
+  }
+  blockquote.tip {
+    border-left-color: var(--success);
+    background: #f6ffed;
+  }
+  blockquote.warning {
+    border-left-color: var(--warning);
+    background: #fffbe6;
+  }
+  blockquote.danger {
+    border-left-color: var(--danger);
+    background: #fff1f0;
+  }
+  .badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+    margin-right: 4px;
+  }
+  .badge-success { background: #f6ffed; color: var(--success); border: 1px solid #b7eb8f; }
+  .badge-warning { background: #fffbe6; color: var(--warning); border: 1px solid #ffe58f; }
+  .badge-danger { background: #fff1f0; color: var(--danger); border: 1px solid #ffa39e; }
+  .badge-info { background: var(--primary-light); color: var(--primary); border: 1px solid #91d5ff; }
+  .step-list {
+    counter-reset: step;
+    list-style: none;
+    padding: 0;
+  }
+  .step-list > li {
+    counter-increment: step;
+    position: relative;
+    padding: 14px 18px 14px 56px;
+    margin: 12px 0;
+    background: white;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--primary);
+    border-radius: 6px;
+  }
+  .step-list > li::before {
+    content: counter(step);
+    position: absolute;
+    left: 16px;
+    top: 14px;
+    width: 28px;
+    height: 28px;
+    background: var(--primary);
+    color: white;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 28px;
+    font-weight: 600;
+    font-size: 14px;
+  }
+  .step-list ul, .step-list ol {
+    margin: 8px 0 0 0;
+    padding-left: 22px;
+  }
+  .flow {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 20px 0;
+    padding: 20px;
+    background: var(--bg-alt);
+    border-radius: 8px;
+  }
+  .flow-step {
+    background: white;
+    border: 2px solid var(--primary);
+    color: var(--primary-dark);
+    padding: 10px 18px;
+    border-radius: 24px;
+    font-weight: 500;
+    font-size: 14px;
+  }
+  .flow-arrow {
+    color: var(--primary);
+    font-size: 18px;
+    font-weight: bold;
+  }
+  .case-box {
+    background: linear-gradient(135deg, #fff7e6 0%, #fffbe6 100%);
+    border: 1px solid #ffe58f;
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin: 20px 0;
+  }
+  .case-box h4 {
+    margin-top: 0;
+    color: #d48806;
+  }
+  .case-box .role {
+    display: inline-block;
+    padding: 3px 10px;
+    background: #fa8c16;
+    color: white;
+    border-radius: 4px;
+    font-size: 12px;
+    margin-bottom: 12px;
+  }
+  .role-card {
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    gap: 16px;
+    padding: 14px 18px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    margin: 10px 0;
+  }
+  .role-card .name {
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--primary-dark);
+  }
+  .role-card .name small {
+    display: block;
+    color: var(--text-light);
+    font-size: 12px;
+    font-weight: normal;
+    margin-top: 2px;
+  }
+  .checklist {
+    list-style: none;
+    padding: 0;
+  }
+  .checklist li {
+    padding: 6px 0 6px 28px;
+    position: relative;
+  }
+  .checklist li::before {
+    content: "☐";
+    position: absolute;
+    left: 4px;
+    color: var(--primary);
+    font-size: 16px;
+  }
+  .ui-note {
+    background: #f0f7ff;
+    border: 1px dashed #91d5ff;
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin: 10px 0;
+    font-size: 13px;
+    color: var(--text-light);
+  }
+  .ui-note strong { color: var(--primary-dark); }
+  @media print {
+    body { background: white; }
+    .sidebar { display: none; }
+    .layout { box-shadow: none; max-width: 100%; }
+    .content { padding: 20px; }
+    .header { box-shadow: none; }
+    h2, h3 { page-break-after: avoid; }
+    table, .case-box, pre { page-break-inside: avoid; }
+  }
+  @media (max-width: 900px) {
+    .layout { flex-direction: column; }
+    .sidebar { width: 100%; height: auto; position: static; }
+    .content { padding: 20px; }
+  }
+  .footer {
+    margin-top: 60px;
+    padding: 30px 0;
+    text-align: center;
+    color: var(--text-light);
+    font-size: 13px;
+    border-top: 1px solid var(--border);
+  }
+</style>
+</head>
+<body>
+<div class="layout">
+
+  <aside class="sidebar">
+    <h3>📚 培训目录</h3>
+    <ul>
+      <li class="chapter"><a href="#intro">前言 · 培训说明</a></li>
+
+      <li class="chapter"><a href="#ch1">第一章 · 认识系统</a></li>
+      <li class="sub"><a href="#s1-1">1.1 系统是做什么的</a></li>
+      <li class="sub"><a href="#s1-2">1.2 登录与首次密码修改</a></li>
+      <li class="sub"><a href="#s1-3">1.3 界面导览</a></li>
+      <li class="sub"><a href="#s1-4">1.4 角色与权限速查</a></li>
+
+      <li class="chapter"><a href="#ch2">第二章 · 账号管理（管理员）</a></li>
+      <li class="sub"><a href="#s2-1">2.1 创建新员工账号</a></li>
+      <li class="sub"><a href="#s2-2">2.2 修改与停用账号</a></li>
+      <li class="sub"><a href="#s2-3">2.3 角色分配建议</a></li>
+
+      <li class="chapter"><a href="#ch3">第三章 · 基础数据维护</a></li>
+      <li class="sub"><a href="#s3-1">3.1 客户与供应商管理</a></li>
+      <li class="sub"><a href="#s3-2">3.2 订单管理</a></li>
+      <li class="sub"><a href="#s3-3">3.3 文件类型说明（9 类）</a></li>
+
+      <li class="chapter"><a href="#ch4">第四章 · 核心业务流程</a></li>
+      <li class="sub"><a href="#s4-1">4.1 上传单证</a></li>
+      <li class="sub"><a href="#s4-2">4.2 查看与管理文件</a></li>
+      <li class="sub"><a href="#s4-3">4.3 人工核对（单证员）</a></li>
+      <li class="sub"><a href="#s4-4">4.4 字段编辑与重新识别</a></li>
+      <li class="sub"><a href="#s4-5">4.5 文件状态流转</a></li>
+
+      <li class="chapter"><a href="#ch5">第五章 · 数据应用</a></li>
+      <li class="sub"><a href="#s5-1">5.1 导出 Excel</a></li>
+      <li class="sub"><a href="#s5-2">5.2 数据报表</a></li>
+      <li class="sub"><a href="#s5-3">5.3 AI 智能问答</a></li>
+
+      <li class="chapter"><a href="#ch6">第六章 · 通知与协作</a></li>
+      <li class="sub"><a href="#s6-1">6.1 系统通知</a></li>
+      <li class="sub"><a href="#s6-2">6.2 多人协作场景</a></li>
+
+      <li class="chapter"><a href="#ch7">第七章 · 端到端实战案例</a></li>
+      <li class="sub"><a href="#s7-1">案例一 · 业务员上传报关单</a></li>
+      <li class="sub"><a href="#s7-2">案例二 · 单证员核对字段</a></li>
+      <li class="sub"><a href="#s7-3">案例三 · 财务月底汇总</a></li>
+
+      <li class="chapter"><a href="#ch8">第八章 · 常见问题 FAQ</a></li>
+      <li class="sub"><a href="#s8-1">8.1 登录与账号</a></li>
+      <li class="sub"><a href="#s8-2">8.2 上传与识别</a></li>
+      <li class="sub"><a href="#s8-3">8.3 字段与导出</a></li>
+      <li class="sub"><a href="#s8-4">8.4 求助方式</a></li>
+
+      <li class="chapter"><a href="#appendix">附录 · 速查卡</a></li>
+    </ul>
+  </aside>
+
+  <main class="content">
+
+    <div class="header">
+      <h1>贸易云档 · 员工培训手册</h1>
+      <p>从零开始，30 分钟掌握外贸单证日常处理</p>
+      <div class="meta">v1.0 · 适用于 TradeDoc 系统所有角色</div>
+    </div>
+
+    <h2 id="intro">前言 · 培训说明</h2>
+    <p>本手册面向 <strong>所有新入职员工</strong>，按照"先认识 → 再建账号 → 再备基础数据 → 再做日常业务 → 再用数据 → 再协作"的顺序展开，配合实战案例和 FAQ，帮助你快速上手。</p>
+
+    <h4>使用建议</h4>
+    <table>
+      <thead><tr><th>角色</th><th>必读章节</th><th>预计耗时</th></tr></thead>
+      <tbody>
+        <tr><td><span class="badge badge-info">所有员工</span></td><td>第一章、第八章</td><td>10 分钟</td></tr>
+        <tr><td><span class="badge badge-info">业务员</span></td><td>第一、三、四、五章 + 案例一</td><td>30 分钟</td></tr>
+        <tr><td><span class="badge badge-info">单证员</span></td><td>第一、四章 + 案例二</td><td>20 分钟</td></tr>
+        <tr><td><span class="badge badge-info">财务人员</span></td><td>第一、五章 + 案例三</td><td>20 分钟</td></tr>
+        <tr><td><span class="badge badge-info">业务主管 / 管理员</span></td><td>全部章节</td><td>60 分钟</td></tr>
+      </tbody>
+    </table>
+
+    <blockquote class="tip">
+      <strong>💡 学习建议：</strong>建议第一次阅读时打开系统对照操作，每完成一节就实操一遍。手册末尾的"速查卡"可打印贴在工位旁备查。
+    </blockquote>
+
+    <!-- ============================== -->
+    <!-- 第一章 · 认识系统 -->
+    <!-- ============================== -->
+    <h2 id="ch1">第一章 · 认识系统</h2>
+
+    <h3 id="s1-1">1.1 系统是做什么的</h3>
+    <p><strong>贸易云档（TradeDoc）</strong> 是一套面向外贸企业的<strong>文件智能管理系统</strong>。它解决一个核心痛点：</p>
+
+    <blockquote>
+      报关单、商业发票、装箱单、银行水单等单证<strong>纸质 / PDF 散落各处，查找耗时，数据无法汇总</strong>。
+    </blockquote>
+
+    <p>系统通过 <strong>OCR + AI</strong> 自动识别单证上的关键字段（报关单号、金额、客户、HS 编码等），把"纸面信息"变成"可查询、可统计、可导出"的结构化数据。</p>
+
+    <h4>系统能帮你做什么</h4>
+    <table>
+      <thead><tr><th>角色</th><th>你能用它做</th></tr></thead>
+      <tbody>
+        <tr><td><strong>业务员</strong></td><td>上传客户单证、关联订单、追踪进度、月度报表</td></tr>
+        <tr><td><strong>单证员</strong></td><td>核对 OCR 识别结果、修正字段、确保数据准确</td></tr>
+        <tr><td><strong>财务人员</strong></td><td>查发票/水单、按客户/订单汇总收支、导出财务台账</td></tr>
+        <tr><td><strong>业务主管</strong></td><td>看部门整体单证完成率、审批关键文件、决策分析</td></tr>
+        <tr><td><strong>管理员</strong></td><td>建账号、配权限、做系统维护</td></tr>
+      </tbody>
+    </table>
+
+    <h3 id="s1-2">1.2 登录与首次密码修改</h3>
+
+    <ol class="step-list">
+      <li><strong>打开浏览器</strong>（推荐 Chrome / Edge），地址栏输入：<code>http://公司服务器IP:8000</code>。具体地址由 IT 或管理员提供。</li>
+      <li><strong>输入账号密码</strong>。
+        <ul>
+          <li>首次启用：默认管理员账号 <code>admin / admin123</code></li>
+          <li>普通员工：由管理员在系统设置中创建账号后发给你</li>
+        </ul>
+      </li>
+      <li><strong>点击「登录」</strong>，成功后进入仪表盘（Dashboard）。</li>
+      <li><span class="badge badge-warning">⚠️ 重要</span> <strong>立即修改默认密码！</strong>路径：右上角头像 → 「修改密码」（或前往「系统设置 → 用户管理」）。</li>
+    </ol>
+
+    <blockquote class="danger">
+      <strong>密码安全要求：</strong>
+      <ul>
+        <li>不少于 8 位</li>
+        <li>建议含字母 + 数字</li>
+        <li>不要使用 <code>123456</code>、<code>admin</code>、姓名拼音等弱密码</li>
+        <li>不要在多人共用电脑保存密码</li>
+      </ul>
+    </blockquote>
+
+    <h3 id="s1-3">1.3 界面导览</h3>
+    <p>登录后，界面分为三块：</p>
+
+    <div class="ui-note">
+      <strong>左侧菜单</strong>（导航栏）：所有功能入口，按角色显示不同菜单项<br>
+      <strong>顶部栏</strong>：通知图标 🔔、当前用户头像、退出按钮<br>
+      <strong>主区域</strong>：根据点击的菜单显示对应内容
+    </div>
+
+    <h4>左侧菜单结构（按角色可见性）</h4>
+    <table>
+      <thead><tr><th>菜单项</th><th>路径</th><th>对谁可见</th><th>用途</th></tr></thead>
+      <tbody>
+        <tr><td>📊 仪表盘</td><td><code>/dashboard</code></td><td>所有人</td><td>本月文件统计、待办提醒</td></tr>
+        <tr><td>📤 上传录入</td><td><code>/upload</code></td><td>业务员及以上</td><td>上传单证文件</td></tr>
+        <tr><td>📁 文件管理</td><td><code>/documents</code></td><td>所有人</td><td>查询、筛选、编辑文件</td></tr>
+        <tr><td>✅ 人工核对</td><td><code>/review</code></td><td>单证员、管理员</td><td>核对 OCR 识别结果</td></tr>
+        <tr><td>🛒 订单管理</td><td><code>/orders</code></td><td>业务员及以上</td><td>维护订单信息</td></tr>
+        <tr><td>👥 客户管理</td><td><code>/customers</code></td><td>业务员及以上</td><td>维护客户/供应商</td></tr>
+        <tr><td>📈 数据报表</td><td><code>/reports</code></td><td>主管、财务</td><td>统计分析报表</td></tr>
+        <tr><td>🤖 AI 问答</td><td><code>/ai</code></td><td>所有人</td><td>用自然语言查数据</td></tr>
+        <tr><td>⚙️ 系统设置</td><td><code>/settings</code></td><td>超级管理员</td><td>用户、角色、日志管理</td></tr>
+      </tbody>
+    </table>
+
+    <h3 id="s1-4">1.4 角色与权限速查</h3>
+
+    <div class="role-card">
+      <div><div class="name">超级管理员<small>super_admin</small></div></div>
+      <div>全部 18 项权限；可建账号、改权限、看所有数据。一般由 IT 或老板担任。</div>
+    </div>
+    <div class="role-card">
+      <div><div class="name">业务主管<small>manager</small></div></div>
+      <div>部门文件管理、审批、报表导出（12 项权限）。看本部门所有业务员的数据。</div>
+    </div>
+    <div class="role-card">
+      <div><div class="name">业务员<small>salesman</small></div></div>
+      <div>上传与管理自己负责客户的单证（8 项）。日常上传的主力。</div>
+    </div>
+    <div class="role-card">
+      <div><div class="name">单证员<small>doc_clerk</small></div></div>
+      <div>OCR 核对、字段修正、文件关联（6 项）。把"机器识别"变成"金标准数据"的关键角色。</div>
+    </div>
+    <div class="role-card">
+      <div><div class="name">财务人员<small>finance</small></div></div>
+      <div>查看银行水单 / 发票、导出财务数据（7 项）。月底对账、做账时使用。</div>
+    </div>
+    <div class="role-card">
+      <div><div class="name">只读访客<small>readonly</small></div></div>
+      <div>仅查看授权范围内文件（1 项）。一般给外部审计、临时合作方使用。</div>
+    </div>
+
+    <!-- ============================== -->
+    <!-- 第二章 · 账号管理 -->
+    <!-- ============================== -->
+    <h2 id="ch2">第二章 · 账号管理（管理员必读）</h2>
+
+    <blockquote class="warning">
+      本章仅适用于 <strong>超级管理员</strong>。普通员工请跳到第三章。
+    </blockquote>
+
+    <h3 id="s2-1">2.1 创建新员工账号</h3>
+
+    <ol class="step-list">
+      <li>左侧菜单 → 「<strong>系统设置</strong>」→ 切换到「<strong>用户管理</strong>」标签页。</li>
+      <li>点击右上角「<strong>+ 新建用户</strong>」按钮。</li>
+      <li>填写表单：
+        <ul>
+          <li><strong>用户名</strong>（登录用，必填，<u>不可重复</u>）：建议用员工姓名拼音，如 <code>zhangsan</code></li>
+          <li><strong>真实姓名</strong>（必填）：用于显示，如 "张三"</li>
+          <li><strong>初始密码</strong>（必填，至少 6 位）：建议设为 <code>员工名拼音+生日后4位</code>，员工首次登录后强制改</li>
+          <li><strong>邮箱</strong>（选填，但建议填，用于密码找回）</li>
+          <li><strong>手机</strong>（选填）</li>
+          <li><strong>部门</strong>（选填）</li>
+          <li><strong>角色</strong>（必填）：从下拉选择，参考 1.4 节</li>
+          <li><strong>状态</strong>：启用 / 停用</li>
+        </ul>
+      </li>
+      <li>点击「保存」。系统会立即创建账号。</li>
+      <li>把用户名 + 初始密码通过 <strong>企业微信 / 钉钉私聊</strong> 发给员工（不要群发！）。</li>
+    </ol>
+
+    <blockquote class="tip">
+      <strong>💡 用户名规范建议：</strong>统一用全小写英文字母 + 数字，不含中文或特殊字符。这样未来导出、对账、API 调用都更稳定。
+    </blockquote>
+
+    <h3 id="s2-2">2.2 修改与停用账号</h3>
+
+    <h4>修改信息</h4>
+    <ol class="step-list">
+      <li>「系统设置 → 用户管理」找到目标用户，点击「编辑」。</li>
+      <li>可修改：真实姓名、邮箱、手机、部门、角色、状态。</li>
+      <li><span class="badge badge-warning">注意</span> <strong>用户名不能修改</strong>。如果用户名错了，需要新建一个账号、停用旧账号。</li>
+    </ol>
+
+    <h4>重置密码</h4>
+    <ol class="step-list">
+      <li>找到目标用户 → 点击「重置密码」按钮。</li>
+      <li>系统生成新密码并显示一次（请截图或复制保存）。</li>
+      <li>把新密码私聊发给员工，提醒登录后立即修改。</li>
+    </ol>
+
+    <h4>员工离职处理</h4>
+    <ol class="step-list">
+      <li>找到该员工账号 → 把「状态」改为<strong>停用</strong>。<strong>不要直接删除</strong>。</li>
+      <li>停用后该账号无法登录，但历史上传的文件、操作记录仍保留。</li>
+      <li>如果该员工负责的客户需要转给其他业务员，去「客户管理」改"负责人"字段。</li>
+    </ol>
+
+    <blockquote class="danger">
+      <strong>不要删除已上传过文件的账号！</strong>删除会导致历史文件的"上传人"显示为空，影响审计和追溯。永远只停用。
+    </blockquote>
+
+    <h3 id="s2-3">2.3 角色分配建议</h3>
+
+    <table>
+      <thead><tr><th>实际岗位</th><th>建议角色</th><th>理由</th></tr></thead>
+      <tbody>
+        <tr><td>外贸业务员、跟单员</td><td><code>salesman</code></td><td>日常上传、维护客户</td></tr>
+        <tr><td>专职单证员</td><td><code>doc_clerk</code></td><td>专注核对，不需要管客户/订单</td></tr>
+        <tr><td>业务员 + 单证</td><td><code>salesman</code> + <code>doc_clerk</code> 双角色</td><td>同时具备两类权限</td></tr>
+        <tr><td>财务、会计</td><td><code>finance</code></td><td>只看跟钱有关的单证</td></tr>
+        <tr><td>业务经理、部门主管</td><td><code>manager</code></td><td>管理部门、看报表</td></tr>
+        <tr><td>外部审计、咨询顾问</td><td><code>readonly</code></td><td>临时查看，无修改权</td></tr>
+        <tr><td>IT、系统管理员</td><td><code>super_admin</code></td><td>全权限</td></tr>
+      </tbody>
+    </table>
+
+    <!-- ============================== -->
+    <!-- 第三章 · 基础数据维护 -->
+    <!-- ============================== -->
+    <h2 id="ch3">第三章 · 基础数据维护</h2>
+
+    <blockquote>
+      上传单证之前，<strong>必须先把"客户"和"订单"录入系统</strong>。这样后续上传的文件才能正确归类。本章建议管理员或业务主管在系统初始化时统一录入。
+    </blockquote>
+
+    <h3 id="s3-1">3.1 客户与供应商管理</h3>
+
+    <h4>客户 vs 供应商的区别</h4>
+    <p>外贸业务有<strong>两条线</strong>：</p>
+    <div class="flow">
+      <span class="flow-step">采购</span>
+      <span class="flow-arrow">←</span>
+      <span class="flow-step">供应商</span>
+      <span class="flow-arrow" style="margin: 0 24px;">·</span>
+      <span class="flow-step">销售</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step">客户</span>
+    </div>
+
+    <p>系统的"客户管理"实际上是<strong>客户 + 供应商合一</strong>的，靠"类型"字段区分：</p>
+    <table>
+      <thead><tr><th>类型</th><th>含义</th><th>典型文件</th></tr></thead>
+      <tbody>
+        <tr><td><code>customer</code> 客户</td><td>境外买家（销售出口）</td><td>商业发票、装箱单、提单、原产地证</td></tr>
+        <tr><td><code>supplier</code> 供应商</td><td>境内/境外卖家（采购进口）</td><td>采购合同、形式发票、银行水单</td></tr>
+        <tr><td><code>both</code> 互为客户和供应商</td><td>少见，既买又卖</td><td>双方向单证</td></tr>
+      </tbody>
+    </table>
+
+    <h4>录入新客户/供应商</h4>
+    <ol class="step-list">
+      <li>左侧菜单 → 「<strong>客户管理</strong>」→ 右上角「+ 新建」。</li>
+      <li>填写关键字段：
+        <ul>
+          <li><strong>类型</strong>：客户 / 供应商 / 互为</li>
+          <li><strong>公司名称</strong>（中文）</li>
+          <li><strong>英文名称</strong>（境外公司必填）</li>
+          <li><strong>简称</strong>（可选，方便快速识别）</li>
+          <li><strong>国家</strong></li>
+          <li><strong>联系人</strong> / 电话 / 邮箱</li>
+          <li><strong>地址</strong></li>
+          <li><strong>开户行 / 银行账号 / SWIFT</strong>（涉及汇款时必填）</li>
+          <li><strong>税号</strong></li>
+        </ul>
+      </li>
+      <li>保存。客户即可在订单和上传页面被选中。</li>
+    </ol>
+
+    <blockquote class="tip">
+      <strong>💡 录入顺序建议：</strong>第一次启用系统，建议先把<strong>常合作的前 20 个客户</strong>录入。其他客户在第一次发生业务时再补建即可，不必一次性录入数百个。
+    </blockquote>
+
+    <h3 id="s3-2">3.2 订单管理</h3>
+
+    <h4>什么时候建订单</h4>
+    <p>外贸的常见流程：<strong>询盘 → 报价 → 接单 → 生产 → 出运 → 收款</strong>。建议在"接单"环节就把订单录入系统，后续所有单证（合同、发票、装箱单、报关单、提单……）都关联到这个订单，形成"一票货物档案"。</p>
+
+    <h4>新建订单步骤</h4>
+    <ol class="step-list">
+      <li>左侧菜单 → 「<strong>订单管理</strong>」→ 「+ 新建订单」。</li>
+      <li>填写：
+        <ul>
+          <li><strong>订单号</strong>：自定义，如 <code>SO-2026-0088</code>（销售订单）或 <code>PO-2026-0010</code>（采购订单）</li>
+          <li><strong>订单类型</strong>：出口（export） / 进口（import）</li>
+          <li><strong>客户</strong>：从下拉选（先在 3.1 录入）</li>
+          <li><strong>订单金额</strong>、<strong>币种</strong></li>
+          <li><strong>贸易条款</strong>：FOB / CIF / EXW 等</li>
+          <li><strong>付款条款</strong>：如 <code>T/T 30%订金，70%见提单</code></li>
+          <li><strong>目的国</strong>、<strong>装货港</strong>、<strong>卸货港</strong></li>
+          <li><strong>负责业务员</strong></li>
+        </ul>
+      </li>
+      <li>保存。订单状态默认为 <code>draft</code>（草稿）。</li>
+      <li>业务推进时手动更新状态：<code>draft → confirmed → shipping → completed</code>。</li>
+    </ol>
+
+    <h3 id="s3-3">3.3 文件类型说明（9 类）</h3>
+    <p>系统预置 9 类外贸单证。上传时<strong>必须选择正确的文件类型</strong>，因为：</p>
+    <ul>
+      <li>不同类型的字段提取规则不同（报关单提取 HS 编码，发票提取金额）</li>
+      <li>文件编号前缀不同（D = 报关单，INV = 发票...）</li>
+      <li>归档目录按类型分</li>
+    </ul>
+
+    <table>
+      <thead>
+        <tr><th>编号前缀</th><th>中文名</th><th>英文名</th><th>典型出现场景</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>D</code></td><td>报关单</td><td>Customs Declaration</td><td>清关阶段，海关申报</td></tr>
+        <tr><td><code>INV</code></td><td>商业发票</td><td>Commercial Invoice</td><td>出口给客户、清关、收款依据</td></tr>
+        <tr><td><code>PL</code></td><td>装箱单</td><td>Packing List</td><td>装柜、清关</td></tr>
+        <tr><td><code>BK</code></td><td>银行水单</td><td>Bank Receipt</td><td>收/付汇凭证</td></tr>
+        <tr><td><code>BL</code></td><td>提单/运单</td><td>Bill of Lading</td><td>海运/空运凭证</td></tr>
+        <tr><td><code>CO</code></td><td>原产地证</td><td>Certificate of Origin</td><td>关税优惠、合规</td></tr>
+        <tr><td><code>CT</code></td><td>合同协议</td><td>Contract</td><td>接单时签订</td></tr>
+        <tr><td><code>LC</code></td><td>信用证</td><td>Letter of Credit</td><td>银行担保支付</td></tr>
+        <tr><td><code>DOC</code></td><td>其他文件</td><td>Other Documents</td><td>授权书、检测报告等</td></tr>
+      </tbody>
+    </table>
+
+    <blockquote>
+      <strong>文件编号规则：</strong><code>{前缀}{YYMMDD}-{4位序号}</code><br>
+      例：<code>D260428-0001</code> = 2026 年 4 月 28 日第 1 张报关单
+    </blockquote>
+
+    <!-- ============================== -->
+    <!-- 第四章 · 核心业务流程 -->
+    <!-- ============================== -->
+    <h2 id="ch4">第四章 · 核心业务流程</h2>
+
+    <h4>整体流程图</h4>
+    <div class="flow">
+      <span class="flow-step">上传</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step">OCR 识别</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step">字段提取</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step">人工核对</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step">审批</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step">归档</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step">导出</span>
+    </div>
+
+    <h3 id="s4-1">4.1 上传单证</h3>
+
+    <h4>单文件上传</h4>
+    <ol class="step-list">
+      <li>左侧菜单 → 「<strong>上传录入</strong>」。</li>
+      <li>选择<strong>文件类型</strong>（9 类之一，必选）。</li>
+      <li>选择<strong>关联客户</strong>（强烈建议选，方便后续检索）。</li>
+      <li>选择<strong>关联订单</strong>（选填，但有订单的话务必关联）。</li>
+      <li>把文件 <strong>拖拽到上传区</strong>，或点击「选择文件」浏览本地。
+        <ul>
+          <li>支持格式：PDF、JPG、PNG、TIFF、Word</li>
+          <li>单文件大小：≤ 50MB</li>
+        </ul>
+      </li>
+      <li>点击「<strong>开始上传</strong>」按钮。</li>
+      <li>系统立刻保存文件并自动调用 OCR/文本提取引擎，通常 <strong>5-30 秒</strong>完成识别。</li>
+      <li>识别完成后，文件出现在「文件管理」列表中，状态为 <code>pending_review</code>（待核对）或 <code>pending_approval</code>（待审批）。</li>
+    </ol>
+
+    <h4>批量上传</h4>
+    <ol class="step-list">
+      <li>同样进入「上传录入」页面。</li>
+      <li>切换到「<strong>批量上传</strong>」标签。</li>
+      <li>选好文件类型 / 订单后，<strong>一次拖入多个文件</strong>（最多 50 个）。</li>
+      <li>系统会逐个上传并生成识别任务，进度条实时显示。</li>
+    </ol>
+
+    <blockquote class="warning">
+      <strong>⚠️ 上传注意事项：</strong>
+      <ul>
+        <li>批量上传时所有文件<strong>必须是同一类型</strong>（如全是装箱单）</li>
+        <li>扫描件请选清晰扫描，模糊照片识别准确率会大幅下降</li>
+        <li>PDF 优于图片，电子版 PDF 优于扫描 PDF</li>
+        <li>多页文档建议合并为一个 PDF，不要分散上传</li>
+      </ul>
+    </blockquote>
+
+    <h3 id="s4-2">4.2 查看与管理文件</h3>
+
+    <h4>文件列表页（/documents）</h4>
+    <ol class="step-list">
+      <li>左侧菜单 → 「<strong>文件管理</strong>」。</li>
+      <li>顶部<strong>筛选区</strong>支持多维筛选：
+        <ul>
+          <li>文件类型（报关单/发票/...）</li>
+          <li>状态（草稿/待核对/待审批/已归档/作废）</li>
+          <li>上传日期范围</li>
+          <li>关联客户</li>
+          <li>关联订单</li>
+          <li>关键词（搜文件名、文档编号）</li>
+        </ul>
+      </li>
+      <li>点击文件列任意位置进入<strong>详情页</strong>。</li>
+    </ol>
+
+    <h4>文件详情页</h4>
+    <p>详情页左侧是<strong>文件预览</strong>（PDF / 图片），右侧是<strong>识别字段</strong>。常用操作：</p>
+    <table>
+      <thead><tr><th>操作</th><th>怎么做</th><th>用途</th></tr></thead>
+      <tbody>
+        <tr><td>预览</td><td>详情页默认显示</td><td>对照原文核查</td></tr>
+        <tr><td>下载</td><td>点「下载原文件」</td><td>本地保存</td></tr>
+        <tr><td>编辑字段</td><td>双击字段值</td><td>修正 OCR 错误</td></tr>
+        <tr><td>新增字段</td><td>点「+ 新增字段」</td><td>补充模板外的字段</td></tr>
+        <tr><td>删除字段</td><td>字段行右侧 🗑</td><td>误识别的字段</td></tr>
+        <tr><td>重新识别</td><td>点「重新 OCR」</td><td>识别质量差时使用</td></tr>
+        <tr><td>导出 Excel</td><td>点「导出 Excel」</td><td>转交财务/报表</td></tr>
+        <tr><td>变更状态</td><td>点状态下拉</td><td>归档 / 作废</td></tr>
+      </tbody>
+    </table>
+
+    <h3 id="s4-3">4.3 人工核对（单证员）</h3>
+
+    <blockquote>
+      OCR 自动识别后，<strong>置信度低于 80% 的字段</strong>会生成"核对任务"，由单证员逐一确认。这一步是<strong>数据准确性的关键防线</strong>。
+    </blockquote>
+
+    <h4>核对操作步骤</h4>
+    <ol class="step-list">
+      <li>左侧菜单 → 「<strong>人工核对</strong>」。</li>
+      <li>看到<strong>任务列表</strong>，按优先级（紧急/普通）和时间排序。</li>
+      <li>点击任务进入<strong>核对页</strong>：
+        <ul>
+          <li>左：文件原图/PDF（带字段位置高亮，俗称 bbox 标注）</li>
+          <li>右：OCR 识别出的字段值，标红的是需要确认的</li>
+        </ul>
+      </li>
+      <li>逐字段对照原图核对：
+        <ul>
+          <li>如果<strong>识别正确</strong> → 点「✓ 确认」</li>
+          <li>如果<strong>识别错误</strong> → 直接在字段框里修改 → 「✓ 确认」</li>
+          <li>如果<strong>该字段在原文中根本没有</strong> → 清空值 → 「✓ 确认」</li>
+          <li>如果<strong>自己无法判断</strong> → 「跳过」转交他人</li>
+        </ul>
+      </li>
+      <li>所有字段确认后，任务自动关闭，文件状态推进到 <code>pending_approval</code>（待审批）。</li>
+    </ol>
+
+    <blockquote class="tip">
+      <strong>💡 核对效率技巧：</strong>
+      <ul>
+        <li>金额类字段：先看币种，再看数字，注意小数点位置</li>
+        <li>日期类字段：注意年月日顺序（中式 vs 美式）</li>
+        <li>HS 编码：必须是 8-10 位数字，不能有字母</li>
+        <li>客户名称：核对英文拼写，特别是首字母大小写</li>
+      </ul>
+    </blockquote>
+
+    <h3 id="s4-4">4.4 字段编辑与重新识别</h3>
+
+    <h4>什么时候手动编辑字段</h4>
+    <ul>
+      <li>OCR 漏识别了某个字段 → 「+ 新增字段」</li>
+      <li>OCR 识别错了几个字符 → 双击字段值修改</li>
+      <li>OCR 误识别了一个不该有的字段 → 点 🗑 删除</li>
+    </ul>
+
+    <h4>什么时候触发重新 OCR</h4>
+    <ul>
+      <li>识别质量普遍很差（多个字段都错） → 重新 OCR 整张</li>
+      <li>上传的文件被替换或修改了 → 重新 OCR</li>
+      <li>系统升级后想用新引擎重跑 → 重新 OCR</li>
+    </ul>
+
+    <blockquote class="warning">
+      <strong>注意：</strong>重新 OCR 会<strong>覆盖未经人工确认的字段值</strong>，但已经确认过的字段（带"已核对"标志）<strong>不会被覆盖</strong>。
+    </blockquote>
+
+    <h3 id="s4-5">4.5 文件状态流转</h3>
+    <p>了解文件状态有助于追踪进度。</p>
+
+    <pre><code>draft (草稿)
+   ↓ 上传后自动转
+ocr_processing (识别中)
+   ↓ 引擎处理完成
+pending_review (待核对)  ← 有低置信度字段
+   ↓ 单证员确认
+pending_approval (待审批)
+   ↓ 主管点"通过"
+approved (已审批)
+   ↓ 自动归档
+archived (已归档)
+
+任意状态都可以 → voided (作废)</code></pre>
+
+    <table>
+      <thead><tr><th>状态</th><th>含义</th><th>谁能操作</th></tr></thead>
+      <tbody>
+        <tr><td><code>draft</code></td><td>刚上传，OCR 未启动</td><td>系统自动</td></tr>
+        <tr><td><code>ocr_processing</code></td><td>识别中，请等待</td><td>系统自动</td></tr>
+        <tr><td><code>pending_review</code></td><td>等待单证员核对</td><td>单证员</td></tr>
+        <tr><td><code>pending_approval</code></td><td>等待主管审批</td><td>业务主管</td></tr>
+        <tr><td><code>approved</code></td><td>已通过</td><td>系统自动归档</td></tr>
+        <tr><td><code>archived</code></td><td>已归档，正常使用中</td><td>不可改</td></tr>
+        <tr><td><code>voided</code></td><td>已作废</td><td>管理员可改回</td></tr>
+      </tbody>
+    </table>
+
+    <!-- ============================== -->
+    <!-- 第五章 · 数据应用 -->
+    <!-- ============================== -->
+    <h2 id="ch5">第五章 · 数据应用</h2>
+
+    <h3 id="s5-1">5.1 导出 Excel</h3>
+
+    <h4>单文件导出</h4>
+    <ol class="step-list">
+      <li>进入文件详情页 → 右上角「<strong>导出 Excel</strong>」按钮。</li>
+      <li>浏览器自动下载，文件名格式：<code>{文档编号}_{文件类型}.xlsx</code>。</li>
+      <li>Excel 内含：基本信息、所有识别字段、置信度、核对状态。</li>
+    </ol>
+
+    <h4>批量导出</h4>
+    <ol class="step-list">
+      <li>在「文件管理」列表页用筛选器选好范围（如：本月所有报关单、客户 A 的所有发票）。</li>
+      <li>列表勾选要导出的文件（或点表头复选框全选当前页）。</li>
+      <li>点顶部「<strong>批量导出</strong>」按钮。</li>
+      <li>稍等几秒，浏览器自动下载一个 Excel，包含所有勾选文件的字段数据，按类型分 Sheet。</li>
+    </ol>
+
+    <blockquote class="tip">
+      <strong>💡 应用场景：</strong>
+      <ul>
+        <li><strong>月末</strong>：导出本月所有商业发票，给财务做账</li>
+        <li><strong>季报</strong>：导出本季出口报关单，做出口额统计</li>
+        <li><strong>审计</strong>：按客户导出所有单证给审计</li>
+      </ul>
+    </blockquote>
+
+    <h3 id="s5-2">5.2 数据报表</h3>
+
+    <ol class="step-list">
+      <li>左侧菜单 → 「<strong>数据报表</strong>」。</li>
+      <li>选择<strong>报表维度</strong>：按文件类型 / 按客户 / 按月份 / 按业务员。</li>
+      <li>选择<strong>时间范围</strong>。</li>
+      <li>系统实时计算并展示图表（柱状图、饼图、趋势线）。</li>
+      <li>点「导出图表」可保存为图片，点「导出数据」可下载 Excel。</li>
+    </ol>
+
+    <h4>常用报表举例</h4>
+    <table>
+      <thead><tr><th>报表名</th><th>用途</th><th>查询频率</th></tr></thead>
+      <tbody>
+        <tr><td>本月文件类型分布</td><td>看业务结构</td><td>每月</td></tr>
+        <tr><td>按客户的单证数量</td><td>看大客户活跃度</td><td>每月</td></tr>
+        <tr><td>本季 OCR 准确率</td><td>评估系统效果</td><td>每季</td></tr>
+        <tr><td>核对待办积压</td><td>单证员工作量</td><td>每周</td></tr>
+        <tr><td>出口总金额趋势</td><td>业绩分析</td><td>每月</td></tr>
+      </tbody>
+    </table>
+
+    <h3 id="s5-3">5.3 AI 智能问答</h3>
+
+    <p>系统集成了基于业务数据的 AI 问答，可以<strong>用大白话直接查询</strong>，无需写 SQL 或导 Excel。</p>
+
+    <ol class="step-list">
+      <li>左侧菜单 → 「<strong>AI 问答</strong>」。</li>
+      <li>在输入框输入问题（中文/英文都行）。</li>
+      <li>点击「发送」，等几秒，AI 自动查询业务数据库并回答。</li>
+    </ol>
+
+    <h4>问题示例</h4>
+    <table>
+      <thead><tr><th>你想知道</th><th>这样问</th></tr></thead>
+      <tbody>
+        <tr><td>本月报关单总额</td><td>"本月所有报关单的总成交金额是多少？"</td></tr>
+        <tr><td>客户业务量</td><td>"客户 ABC Trading 今年的发票一共多少张？"</td></tr>
+        <tr><td>积压情况</td><td>"现在还有几个文件在待核对状态？"</td></tr>
+        <tr><td>员工业绩</td><td>"张三本月上传了多少份文件？"</td></tr>
+        <tr><td>对比分析</td><td>"本季度出口总额比上季度涨了多少？"</td></tr>
+        <tr><td>异常排查</td><td>"哪些发票的 OCR 置信度低于 70%？"</td></tr>
+      </tbody>
+    </table>
+
+    <blockquote class="tip">
+      <strong>💡 提问技巧：</strong>
+      <ul>
+        <li>指明时间范围：用"本月"、"上季度"、"2026 年 4 月"等</li>
+        <li>指明实体名称：客户名、订单号、文件类型</li>
+        <li>多轮对话：可以接着上轮回答继续追问，AI 记得上下文</li>
+        <li>不确定时：用"列出所有..."、"统计..."、"对比..."这类动词开头</li>
+      </ul>
+    </blockquote>
+
+    <!-- ============================== -->
+    <!-- 第六章 · 通知与协作 -->
+    <!-- ============================== -->
+    <h2 id="ch6">第六章 · 通知与协作</h2>
+
+    <h3 id="s6-1">6.1 系统通知</h3>
+
+    <p>顶栏 🔔 图标显示<strong>未读通知数量</strong>。常见通知类型：</p>
+    <table>
+      <thead><tr><th>通知类型</th><th>触发场景</th><th>接收人</th></tr></thead>
+      <tbody>
+        <tr><td>新核对任务</td><td>OCR 完成且有低置信度字段</td><td>单证员</td></tr>
+        <tr><td>新审批任务</td><td>文件转为待审批状态</td><td>业务主管</td></tr>
+        <tr><td>文件被退回</td><td>主管驳回，要重做</td><td>原上传业务员</td></tr>
+        <tr><td>OCR 失败</td><td>识别异常，需手工处理</td><td>上传人</td></tr>
+        <tr><td>密码即将过期</td><td>定期提醒</td><td>本人</td></tr>
+      </tbody>
+    </table>
+
+    <h4>通知操作</h4>
+    <ol class="step-list">
+      <li>点击 🔔 图标展开通知列表。</li>
+      <li>点击单条通知 → 自动跳转到对应文件或任务页。</li>
+      <li>「全部已读」一键清空小红点。</li>
+    </ol>
+
+    <h3 id="s6-2">6.2 多人协作场景</h3>
+
+    <h4>场景一：业务员出差，同事代为上传</h4>
+    <ol class="step-list">
+      <li>同事用自己的账号登录，进入「上传录入」。</li>
+      <li>上传时<strong>务必选择正确的客户和订单</strong>，这样文件归属客户，不归属上传人。</li>
+      <li>原业务员回来后可在「文件管理」筛选自己负责的客户，仍能看到这些文件。</li>
+    </ol>
+
+    <h4>场景二：单证员请假，其他人帮忙核对</h4>
+    <ol class="step-list">
+      <li>临时单证员账号有 <code>review.execute</code> 权限即可。</li>
+      <li>在「人工核对」看到的任务列表是<strong>所有未核对任务</strong>，不区分原指派人。</li>
+      <li>核对完成后系统自动记录"实际核对人"，方便事后追溯。</li>
+    </ol>
+
+    <h4>场景三：业务交接</h4>
+    <ol class="step-list">
+      <li>管理员登录 → 「客户管理」找到要交接的客户。</li>
+      <li>把「负责业务员」字段从离职人改为接替人。</li>
+      <li>历史文件归属<strong>不变</strong>（仍记录原上传人），但<strong>新文件归到新业务员</strong>。</li>
+    </ol>
+
+    <!-- ============================== -->
+    <!-- 第七章 · 实战案例 -->
+    <!-- ============================== -->
+    <h2 id="ch7">第七章 · 端到端实战案例</h2>
+
+    <div class="case-box">
+      <span class="role">案例一</span>
+      <h4 id="s7-1">业务员小张上传一份新客户的报关单</h4>
+      <p><strong>背景：</strong>小张刚接了一笔出口订单，给美国客户 "ABC Trading" 出口集成电路芯片。今天拿到了海关报关单 PDF，需要录入系统。</p>
+
+      <h4>操作步骤</h4>
+      <ol class="step-list">
+        <li><strong>登录系统</strong>。用账号 <code>zhangsan</code> 登录。</li>
+        <li><strong>建客户</strong>（首次合作）。
+          <ul>
+            <li>左侧菜单 →「客户管理」→「+ 新建」</li>
+            <li>类型：<strong>客户</strong></li>
+            <li>公司名称（中文）：ABC 贸易</li>
+            <li>英文名称：ABC Trading Co., Ltd.</li>
+            <li>国家：美国 USA</li>
+            <li>联系人 / 电话 / 邮箱：填齐</li>
+            <li>保存</li>
+          </ul>
+        </li>
+        <li><strong>建订单</strong>。
+          <ul>
+            <li>「订单管理」→「+ 新建订单」</li>
+            <li>订单号：<code>SO-2026-0088</code></li>
+            <li>类型：出口</li>
+            <li>客户：选刚建好的 ABC 贸易</li>
+            <li>订单金额：48200 USD</li>
+            <li>贸易条款：FOB 上海</li>
+            <li>目的国：美国</li>
+            <li>装货港 / 卸货港 / 负责业务员（自己）</li>
+            <li>保存</li>
+          </ul>
+        </li>
+        <li><strong>上传报关单</strong>。
+          <ul>
+            <li>「上传录入」</li>
+            <li>文件类型：<strong>报关单</strong></li>
+            <li>关联订单：选 <code>SO-2026-0088</code>（系统会自动带出客户 ABC 贸易）</li>
+            <li>拖入 PDF → 「开始上传」</li>
+          </ul>
+        </li>
+        <li><strong>等待 OCR</strong>（约 10-30 秒）。系统识别完后，文件出现在「文件管理」列表，状态多半为「待核对」（因为是新模板，可能有几个字段置信度低）。</li>
+        <li><strong>查看识别结果</strong>。点开文件详情，浏览左侧 PDF 和右侧字段。</li>
+        <li><strong>等单证员核对</strong>。带"待核对"状态的文件会自动出现在单证员的工作台上。</li>
+      </ol>
+
+      <blockquote class="tip">
+        <strong>💡 小张避坑提示：</strong>
+        <ul>
+          <li>客户公司名一定要双语录入，英文名出错会影响所有英文单证的核对</li>
+          <li>订单金额要和报关单金额一致，便于后期对账</li>
+        </ul>
+      </blockquote>
+    </div>
+
+    <div class="case-box">
+      <span class="role">案例二</span>
+      <h4 id="s7-2">单证员小李核对低置信度字段</h4>
+      <p><strong>背景：</strong>小李是单证员，每天上班第一件事就是清理积压的核对任务。</p>
+
+      <ol class="step-list">
+        <li><strong>登录</strong>账号 <code>lili</code>。仪表盘上看到"未核对任务：12"。</li>
+        <li><strong>进入「人工核对」</strong>页。按"创建时间"升序排序，从最旧的开始处理。</li>
+        <li><strong>打开第一个任务</strong>。
+          <ul>
+            <li>左侧显示原 PDF：一张报关单</li>
+            <li>右侧显示 OCR 识别的 10 个字段，其中 3 个红色 = 待确认</li>
+          </ul>
+        </li>
+        <li><strong>核对字段</strong>。
+          <ul>
+            <li>"贸易方式" 识别为 "1分贸易"（应该是 "一般贸易"）→ 修改为 "一般贸易" → ✓</li>
+            <li>"HS 编码" 识别为 "8542310OO1"（O 是字母，应该是数字 0）→ 改为 "8542310001" → ✓</li>
+            <li>"运输方式" 留空（原图也没有）→ 保持空 → ✓</li>
+          </ul>
+        </li>
+        <li><strong>提交</strong>。三个字段都确认后，任务自动关闭，文件转为「待审批」。</li>
+        <li><strong>继续下一个任务</strong>。循环上面流程，直到任务列表清空。</li>
+      </ol>
+
+      <blockquote class="warning">
+        <strong>⚠️ 小李工作要点：</strong>
+        <ul>
+          <li>不能"看着差不多就点确认"，必须每个字段对照原文核对</li>
+          <li>无法判断的字段（比如客户的特殊地址缩写）→ 点「跳过」，让业务员或主管处理</li>
+          <li>修改后的内容会被记录到 <code>field_change_logs</code>，作为系统训练数据</li>
+        </ul>
+      </blockquote>
+    </div>
+
+    <div class="case-box">
+      <span class="role">案例三</span>
+      <h4 id="s7-3">财务月底导出当月发票汇总</h4>
+      <p><strong>背景：</strong>财务王姐每月 1 号要给老板交一份"上月销售发票汇总 Excel"。</p>
+
+      <ol class="step-list">
+        <li><strong>登录</strong>账号 <code>wangli</code>（角色 finance）。</li>
+        <li><strong>进入「文件管理」</strong>。</li>
+        <li><strong>设置筛选条件</strong>。
+          <ul>
+            <li>文件类型：<strong>商业发票</strong></li>
+            <li>上传日期：<strong>2026-04-01 至 2026-04-30</strong></li>
+            <li>状态：<strong>已归档</strong>（排除掉未审批和草稿）</li>
+          </ul>
+        </li>
+        <li><strong>查看结果</strong>。列表显示本月 47 张已归档发票。</li>
+        <li><strong>全选 → 批量导出</strong>。点列表表头复选框全选 → 点「批量导出 Excel」。</li>
+        <li><strong>打开 Excel</strong>。文件含：发票号、日期、买家、金额、币种、付款条款 等字段。</li>
+        <li><strong>加工成汇总表</strong>。在 Excel 里用数据透视表按客户汇总，加几列同比环比。</li>
+        <li><strong>发给老板</strong>。</li>
+      </ol>
+
+      <blockquote class="tip">
+        <strong>💡 王姐进阶用法：</strong>
+        <ul>
+          <li>可以同时打开「AI 问答」问："本月发票总金额按客户分组是多少？"——直接得到结构化数据，省略一步透视表</li>
+          <li>把"上月所有发票导出"这个动作设为浏览器书签（带筛选参数的 URL），每月一键打开</li>
+        </ul>
+      </blockquote>
+    </div>
+
+    <!-- ============================== -->
+    <!-- 第八章 · 常见问题 FAQ -->
+    <!-- ============================== -->
+    <h2 id="ch8">第八章 · 常见问题 FAQ</h2>
+
+    <h3 id="s8-1">8.1 登录与账号</h3>
+
+    <blockquote>
+      <strong>Q：忘记密码了怎么办？</strong><br>
+      A：联系管理员重置。管理员路径：「系统设置 → 用户管理」→ 找到你 → 「重置密码」→ 把新密码发给你。
+    </blockquote>
+
+    <blockquote>
+      <strong>Q：能用同一账号在多台电脑登录吗？</strong><br>
+      A：可以。但同一时间多端登录可能导致数据冲突，建议保持单端使用。
+    </blockquote>
+
+    <blockquote>
+      <strong>Q：用户名能改吗？</strong><br>
+      A：不能。如果用户名错了，需要管理员新建一个账号、停用旧账号。
+    </blockquote>
+
+    <blockquote>
+      <strong>Q：登录后看不到某个菜单？</strong><br>
+      A：菜单按角色显示。比如只读角色看不到"上传录入"和"系统设置"。如有疑问联系管理员检查角色配置。
+    </blockquote>
+
+    <h3 id="s8-2">8.2 上传与识别</h3>
+
+    <blockquote>
+      <strong>Q：上传后一直显示"识别中"，怎么办？</strong><br>
+      A：先等 30 秒。若超过 2 分钟仍未完成，可能是 OCR 服务未启动。联系管理员检查 Python OCR 服务（<code>start.bat</code>）。
+    </blockquote>
+
+    <blockquote>
+      <strong>Q：识别结果几乎全错怎么办？</strong><br>
+      A：
+      <ol>
+        <li>检查文件是否清晰（模糊扫描件识别效果差）</li>
+        <li>确认文件类型选对了（报关单选成发票，识别字段就会错位）</li>
+        <li>详情页点「重新 OCR」再跑一次</li>
+        <li>仍然不行 → 联系单证员手动录入</li>
+      </ol>
+    </blockquote>
+
+    <blockquote>
+      <strong>Q：批量上传时有几个文件失败了？</strong><br>
+      A：失败的文件会单独提示。点击错误信息可以看具体原因（格式不支持、文件过大、网络异常等）。修正后单独重传即可。
+    </blockquote>
+
+    <blockquote>
+      <strong>Q：能上传 Word 文档吗？</strong><br>
+      A：可以，系统会用 python-docx 直接提取文字，比 OCR 还准。但建议合同协议这类才用 Word，报关单/发票仍用 PDF。
+    </blockquote>
+
+    <h3 id="s8-3">8.3 字段与导出</h3>
+
+    <blockquote>
+      <strong>Q：识别字段不全，缺少几个我想要的？</strong><br>
+      A：详情页点「+ 新增字段」手动添加。如果该字段是<strong>所有文件都缺</strong>，说明字段模板没配置，联系管理员去「系统设置 → 字段模板」补一个。
+    </blockquote>
+
+    <blockquote>
+      <strong>Q：导出 Excel 后有些字段是空的？</strong><br>
+      A：说明这些字段在原文件里没有识别到或没人工补录。建议：
+      <ol>
+        <li>导出前先把待核对的文件处理完</li>
+        <li>列表页筛选时排除掉草稿和未审批的</li>
+      </ol>
+    </blockquote>
+
+    <blockquote>
+      <strong>Q：能定制导出模板吗（比如老板想要他自己的格式）？</strong><br>
+      A：当前版本提供标准 Excel 模板。定制模板属于二次开发，请提需求给 IT。
+    </blockquote>
+
+    <h3 id="s8-4">8.4 求助方式</h3>
+
+    <table>
+      <thead><tr><th>问题类型</th><th>找谁</th><th>渠道</th></tr></thead>
+      <tbody>
+        <tr><td>操作不会用</td><td>本手册 + 同事</td><td>先翻第七章实战案例</td></tr>
+        <tr><td>账号 / 权限问题</td><td>系统管理员</td><td>企业微信</td></tr>
+        <tr><td>OCR 识别异常</td><td>单证员主管 → IT</td><td>截图 + 文档编号</td></tr>
+        <tr><td>系统卡 / 报错</td><td>IT</td><td>截屏 + 提示信息 + 操作步骤</td></tr>
+        <tr><td>数据丢失 / 误删</td><td>系统管理员</td><td>立即联系！有 7 天回收期</td></tr>
+        <tr><td>新功能需求</td><td>业务主管 → 产品</td><td>需求说明</td></tr>
+      </tbody>
+    </table>
+
+    <!-- ============================== -->
+    <!-- 附录 · 速查卡 -->
+    <!-- ============================== -->
+    <h2 id="appendix">附录 · 速查卡</h2>
+
+    <h3>角色权限一图速查</h3>
+    <table>
+      <thead><tr><th>功能</th><th>管理员</th><th>主管</th><th>业务员</th><th>单证员</th><th>财务</th><th>只读</th></tr></thead>
+      <tbody>
+        <tr><td>登录系统</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td></tr>
+        <tr><td>上传文件</td><td>✓</td><td>✓</td><td>✓</td><td>—</td><td>—</td><td>—</td></tr>
+        <tr><td>查看文件</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td></tr>
+        <tr><td>编辑字段</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>—</td><td>—</td></tr>
+        <tr><td>核对任务</td><td>✓</td><td>✓</td><td>—</td><td>✓</td><td>—</td><td>—</td></tr>
+        <tr><td>审批</td><td>✓</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+        <tr><td>导出 Excel</td><td>✓</td><td>✓</td><td>✓</td><td>—</td><td>✓</td><td>—</td></tr>
+        <tr><td>数据报表</td><td>✓</td><td>✓</td><td>—</td><td>—</td><td>✓</td><td>—</td></tr>
+        <tr><td>AI 问答</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>—</td></tr>
+        <tr><td>用户管理</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+      </tbody>
+    </table>
+
+    <h3>日常操作清单</h3>
+
+    <h4>业务员每日工作清单</h4>
+    <ul class="checklist">
+      <li>登录系统，查看仪表盘待办</li>
+      <li>处理 🔔 通知（如有退回件）</li>
+      <li>当天到货的单证：上传 → 关联客户和订单</li>
+      <li>检查上传成功的文件状态</li>
+      <li>更新订单进度（draft → confirmed → shipping → completed）</li>
+    </ul>
+
+    <h4>单证员每日工作清单</h4>
+    <ul class="checklist">
+      <li>登录系统，查看核对积压</li>
+      <li>按时间顺序逐个核对低置信度字段</li>
+      <li>对识别质量差的批次发现规律，反馈给 IT 优化</li>
+      <li>对照原文检查每个字段，不假设、不漏改</li>
+      <li>日终前确保当天积压清零</li>
+    </ul>
+
+    <h4>财务每月工作清单</h4>
+    <ul class="checklist">
+      <li>月初导出上月所有发票（含正反两个方向）</li>
+      <li>导出上月银行水单核对收付</li>
+      <li>在数据报表中查"出口总额趋势"</li>
+      <li>用 AI 问答快速验证关键数据</li>
+      <li>留档 Excel 备份</li>
+    </ul>
+
+    <h3>关键快捷操作</h3>
+    <table>
+      <thead><tr><th>想做的事</th><th>最快路径</th></tr></thead>
+      <tbody>
+        <tr><td>找某张报关单</td><td>「文件管理」筛选「类型=报关单 + 关键词=单号」</td></tr>
+        <tr><td>查客户本月发票</td><td>「文件管理」筛选「类型=发票 + 客户 + 日期」</td></tr>
+        <tr><td>导本月所有出口</td><td>「文件管理」筛选「日期范围」→ 全选 → 批量导出</td></tr>
+        <tr><td>统计金额</td><td>「AI 问答」直接问</td></tr>
+        <tr><td>看待办</td><td>顶栏 🔔 图标 或 仪表盘</td></tr>
+      </tbody>
+    </table>
+
+    <h3>文件类型编号速记</h3>
+    <table>
+      <thead><tr><th>前缀</th><th>类型</th><th>记忆口诀</th></tr></thead>
+      <tbody>
+        <tr><td><code>D</code></td><td>报关单</td><td><strong>D</strong>eclaration</td></tr>
+        <tr><td><code>INV</code></td><td>商业发票</td><td><strong>INV</strong>oice</td></tr>
+        <tr><td><code>PL</code></td><td>装箱单</td><td><strong>P</strong>acking <strong>L</strong>ist</td></tr>
+        <tr><td><code>BK</code></td><td>银行水单</td><td><strong>B</strong>an<strong>K</strong></td></tr>
+        <tr><td><code>BL</code></td><td>提单</td><td><strong>B</strong>ill of <strong>L</strong>ading</td></tr>
+        <tr><td><code>CO</code></td><td>原产地证</td><td><strong>C</strong>ertificate of <strong>O</strong>rigin</td></tr>
+        <tr><td><code>CT</code></td><td>合同协议</td><td><strong>C</strong>on<strong>T</strong>ract</td></tr>
+        <tr><td><code>LC</code></td><td>信用证</td><td><strong>L</strong>etter of <strong>C</strong>redit</td></tr>
+        <tr><td><code>DOC</code></td><td>其他文件</td><td><strong>DOC</strong>ument</td></tr>
+      </tbody>
+    </table>
+
+    <div class="footer">
+      <p>
+        贸易云档 TradeDoc · 员工培训手册<br>
+        v1.0 · 2026-05-11<br>
+        如有培训内容反馈或改进建议，请联系系统管理员
+      </p>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  document.querySelectorAll('.sidebar a').forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+</script>
+</body>
+</html>
