@@ -1,0 +1,173 @@
+================================================================
+  贸易云档 TradeDoc - 增量更新包 v2026_pdf_split
+================================================================
+
+【本次更新内容】
+
+  新增功能: PDF 智能拆分
+  ---------------------------------------------------------------
+  一份混合 PDF（如「报关单+提单+装箱单」合并扫描件）上传后,
+  系统自动识别每页类型, 用户确认后物理拆分成多个独立子文档,
+  每个子文档独立 OCR 提取字段。
+
+  涉及改动:
+    - 数据库     : documents 表加 3 个字段（向后兼容）
+    - Python 端  : 新增 pdf_splitter 模块 + /api/splitter/* 路由
+    - PHP 端     : Document 模型、DocumentService、新增 SplitterService
+    - 前端       : 详情页加「智能拆分」按钮 + 预览对话框 + 父子关系展示
+
+
+【目录结构】
+
+  update_2026_pdf_split/
+  ├── UPDATE.txt                      ← 本说明
+  ├── apply_update.bat                ← 一键执行脚本（推荐用这个）
+  ├── database/
+  │   └── add_split_support.sql       ← 数据库迁移（可重复执行）
+  ├── tradedoc/                       ← PHP 端改动
+  │   ├── app/
+  │   │   ├── Models/Document.php
+  │   │   ├── Services/DocumentService.php
+  │   │   ├── Services/SplitterService.php       ← 新增
+  │   │   └── Http/Controllers/Api/DocumentController.php
+  │   ├── routes/api.php
+  │   ├── resources/js/api/document.js           ← 备查（生产用编译产物）
+  │   ├── resources/js/views/document/Detail.vue ← 备查（同上）
+  │   └── public/build/                          ← Vite 编译产物（重要）
+  └── tradedoc-python/                ← Python 端改动
+      └── app/
+          ├── api/main.py
+          ├── api/splitter_router.py              ← 新增
+          └── services/pdf_splitter/              ← 新增整个模块
+              ├── __init__.py
+              ├── keywords.py
+              ├── classifier.py
+              └── splitter.py
+
+
+【部署前确认】
+
+  生产服务器要满足:
+    ✓ 已部署旧版本贸易云档（含 phpStudy / MySQL / PHP / Python）
+    ✓ Python 已装 pdfplumber 和 pymupdf
+      （如未装，apply_update.bat 会提示并自动 pip install）
+    ✓ 当前业务无急用，留 10-15 分钟更新窗口
+
+
+【部署步骤】（推荐：一键脚本）
+
+  1. 把整个 update_2026_pdf_split/ 文件夹拷到生产服务器任意位置
+     例: C:\product\update_2026_pdf_split\
+
+  2. 用管理员身份打开 cmd，运行:
+       cd C:\product\update_2026_pdf_split\
+       apply_update.bat
+
+  3. 脚本会依次执行:
+     [1/7] 备份数据库 + 代码到 C:\product\backup_yyyymmdd_hhmmss\
+     [2/7] 停止 Python OCR 服务
+     [3/7] 复制覆盖代码文件
+     [4/7] 应用数据库迁移
+     [5/7] 安装/升级 Python 依赖（pymupdf, pdfplumber）
+     [6/7] 清 Laravel 缓存并重建
+     [7/7] 启动 Python OCR 服务
+
+  4. 脚本结束后，需手动在 phpStudy 面板重启 PHP-CGI
+
+  5. 浏览器强刷（Ctrl+Shift+F5）验证
+
+
+【部署步骤】（备选：手动 8 步）
+
+  如果不放心一键脚本，按以下手动操作（路径按实际环境调整）:
+
+  1. 备份
+     "C:\phpstudy_pro\Extensions\MySQL8.0.12\bin\mysqldump.exe" -uroot -p tradedoc > C:\product\backup_before_split.sql
+     xcopy "C:\product\business_file_management\tradedoc" "C:\product\backup_tradedoc\" /E /I /Y
+     xcopy "C:\product\business_file_management\tradedoc-python" "C:\product\backup_tradedoc-python\" /E /I /Y
+
+  2. 停 Python OCR
+     C:\product\business_file_management\stop.bat
+
+  3. 复制覆盖
+     xcopy "tradedoc" "C:\product\business_file_management\tradedoc\" /E /I /Y
+     xcopy "tradedoc-python" "C:\product\business_file_management\tradedoc-python\" /E /I /Y
+
+  4. 跑数据库迁移
+     "C:\phpstudy_pro\Extensions\MySQL8.0.12\bin\mysql.exe" -uroot -p tradedoc < database\add_split_support.sql
+
+  5. 装 Python 依赖
+     C:\Users\Administrator\AppData\Local\Python\pythoncore-3.14-64\python.exe -m pip install pymupdf pdfplumber
+
+  6. 清 Laravel 缓存
+     cd C:\product\business_file_management\tradedoc
+     C:\phpstudy_pro\Extensions\php\php8.5.0nts\php.exe artisan view:clear
+     C:\phpstudy_pro\Extensions\php\php8.5.0nts\php.exe artisan config:cache
+     C:\phpstudy_pro\Extensions\php\php8.5.0nts\php.exe artisan route:cache
+
+  7. 启动服务
+     C:\product\business_file_management\start.bat
+     （手动）在 phpStudy 面板重启 PHP
+
+  8. 浏览器强刷 Ctrl+Shift+F5
+
+
+【验证清单】
+
+  打开管理员 cmd，依次跑:
+
+  □ 检查 Python 新路由
+    curl http://127.0.0.1:8100/openapi.json
+    （应该看到 /api/splitter/analyze 和 /api/splitter/execute）
+
+  □ 检查数据库迁移
+    "C:\phpstudy_pro\Extensions\MySQL8.0.12\bin\mysql.exe" -uroot -p tradedoc -e "DESC documents" | findstr "parent_document_id is_split_container"
+    （应该看到 2 个字段）
+
+  □ 浏览器测试
+    1. 登录系统
+    2. 进入任意一份 PDF 文件详情页
+    3. 右上角应看到黄色「智能拆分」按钮
+    4. 点按钮，弹出预览对话框，显示页面分类
+    5. 确认拆分后，父文档状态变「已归档」，下方出现子文档列表
+
+
+【回滚（万一更新后系统异常）】
+
+  1. 停 Python OCR:  stop.bat
+  2. 还原代码:
+       xcopy "C:\product\backup_tradedoc\" "C:\product\business_file_management\tradedoc\" /E /I /Y
+       xcopy "C:\product\backup_tradedoc-python\" "C:\product\business_file_management\tradedoc-python\" /E /I /Y
+  3. 还原数据库:
+       "C:\phpstudy_pro\Extensions\MySQL8.0.12\bin\mysql.exe" -uroot -p tradedoc < C:\product\backup_before_split.sql
+  4. 清缓存:
+       cd C:\product\business_file_management\tradedoc
+       C:\phpstudy_pro\Extensions\php\php8.5.0nts\php.exe artisan config:cache
+       C:\phpstudy_pro\Extensions\php\php8.5.0nts\php.exe artisan route:cache
+  5. 启 Python OCR:  start.bat
+  6. phpStudy 重启 PHP
+
+  注意：拆分后新生成的子文档记录在回滚 SQL 后会消失，
+       物理子文件还在 tradedoc/storage/app/private/documents/yyyy/mm/类型/split/ 下，
+       可以手工删除。
+
+
+【常见问题】
+
+  Q: 浏览器还是看不到「智能拆分」按钮？
+  A: 1. 强刷浏览器 Ctrl+Shift+F5（前端有缓存）
+     2. F12 → Application → Clear storage 后再刷
+     3. 检查 tradedoc/public/build/ 目录是否被新文件覆盖
+
+  Q: 点拆分按钮报「服务器错误」？
+  A: 1. Python OCR 服务没起来，检查 8100 端口
+     2. curl http://127.0.0.1:8100/api/health 看健康状态
+
+  Q: 拆分后子文档 OCR 不出字段？
+  A: 1. 看 tradedoc/storage/logs/laravel.log
+     2. 看 Python 控制台日志
+     3. 子文档单独触发「重新识别」
+
+  Q: 数据库迁移报错？
+  A: 检查 documents 表是否已经有 parent_document_id 字段（重复执行会跳过）
+     如果不是，检查 MySQL 用户权限是否能 ALTER TABLE
