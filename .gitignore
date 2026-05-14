@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+.venv/
+venv/
+
+# PHP / Laravel
+/tradedoc/vendor/
+/tradedoc/node_modules/
+/tradedoc/storage/app/private/documents/
+/tradedoc/storage/app/private/documents/**/*
+/tradedoc/storage/logs/*.log
+/tradedoc/storage/framework/cache/data/*
+/tradedoc/storage/framework/sessions/*
+/tradedoc/storage/framework/views/*
+/tradedoc/bootstrap/cache/*.php
+!/tradedoc/bootstrap/cache/.gitkeep
+
+# 环境配置（含敏感信息）
+.env
+*.env.local
+/tradedoc/.env
+/tradedoc-python/.env
+
+# IDE
+.idea/
+.vscode/
+*.swp
+.DS_Store
+
+# Claude Code 工作树（临时）
+/.claude/worktrees/
+
+# 临时日志/拆分输出
+/tmp/
+*.log
