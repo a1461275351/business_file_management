@@ -31,8 +31,8 @@ venv/
 *.swp
 .DS_Store
 
-# Claude Code 工作树（临时）
-/.claude/worktrees/
+# Claude Code 本地配置（每人不同，不提交）
+.claude/
 
 # 临时日志/拆分输出
 /tmp/
